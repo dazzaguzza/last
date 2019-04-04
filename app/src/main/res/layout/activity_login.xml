@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".loginMvp.ActivityLogin">
+
+<RelativeLayout
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/grad_bg">
+
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerInParent="true"
+       android:layout_marginLeft="40dp"
+       android:layout_marginRight="40dp">
+
+       <ImageView
+           android:id="@+id/ImgView_logo"
+           android:layout_width="85dp"
+           android:layout_height="85dp"
+           android:adjustViewBounds="true"
+           android:scaleType="fitCenter"
+           android:src="@drawable/owlicon"/>
+
+       <RelativeLayout
+           android:id="@+id/Rel_layout"
+           android:layout_below="@id/ImgView_logo"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:visibility="gone">
+
+           <TextView
+               android:id="@+id/tv_login"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:fontFamily="cursive"
+               android:layout_marginTop="5dp"
+               android:text="Login¨"
+               android:textSize="40dp"/>
+           
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_below="@+id/tv_login"
+               android:layout_marginTop="10dp">
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical">
+
+                   <Button
+                       android:id="@+id/btn_kakao"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:text="카카오톡 로그인"
+                       android:textColor="#ffffff"
+                       android:background="@drawable/login_shape"/>
+
+                   <Button
+                       android:id="@+id/btn_naver"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:text="네이버 로그인"
+                       android:textColor="#ffffff"
+                       android:layout_marginTop="15dp"
+                       android:background="@drawable/login_shape"
+                        />
+
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+
+       </RelativeLayout>
+
+
+   </RelativeLayout>
+
+</RelativeLayout>
+
+    </layout>
