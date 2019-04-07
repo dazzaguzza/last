@@ -48,6 +48,7 @@ public class LoginPresenterImpl implements LoginPersenter {
     @Override
     public void goToMs() {
         mLogin_View.goToMainScreen();
+        mLogin_View.finishScreen();
     }
 
 

@@ -39,7 +39,7 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     private LoginPersenter mLogin_Pregenter;
     public static OAuthLogin mOAuthLoginModule;
     ActivityLoginBinding binding;
-    String kakaoAcessToken,kakaoRefreshToken;
+    String kakaoAcessToken, kakaoRefreshToken;
     SharedPreferenceUtil sharedPreferenceUtil;
 
     Handler handler = new Handler();
@@ -55,6 +55,8 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             ((ViewGroup) findViewById(R.id.layout)).getLayoutTransition()
                     .enableTransitionType(LayoutTransition.CHANGING);
@@ -62,7 +64,6 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
 
         handler.postDelayed(runnable, 2000);
         mLogin_Pregenter = new LoginPresenterImpl(this);
-        sharedPreferenceUtil = new SharedPreferenceUtil();
 
         kakao();
         naver();
@@ -71,14 +72,14 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     //네이버
     void naver() {
 
-        try{
+        try {
             mOAuthLoginModule = OAuthLogin.getInstance();
             mOAuthLoginModule.init(this, "AvoGTmzyF6tLpxThYQQA", "kRB8dgvq7D", "dazzaguzza");
             String refreshToken = mOAuthLoginModule.getRefreshToken(ActivityLogin.this);
-            String checkToken = sharedPreferenceUtil.getSharedPreference(ActivityLogin.this,"naverRefreshToken");
-            Log.d("refreshTokenNaver", "naver: "+refreshToken);
+            String checkToken = sharedPreferenceUtil.getSharedPreference( "naverRefreshToken");
+            Log.d("refreshTokenNaver", "naver: " + refreshToken);
 
-            if(checkToken.equals(refreshToken)){
+            if (checkToken.equals(refreshToken)) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -88,9 +89,8 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
             }
 
 
-
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
         binding.btnNaver.setOnClickListener(new View.OnClickListener() {
@@ -116,11 +116,10 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
                 String tokenType = mOAuthLoginModule.getTokenType(ActivityLogin.this);
                 String token = mOAuthLoginModule.getTokenType(ActivityLogin.this);
 
-                sharedPreferenceUtil.putSharedPreference(ActivityLogin.this,"naverRefreshToken",refreshToken);
+                sharedPreferenceUtil.putSharedPreference("naverRefreshToken", refreshToken);
 
                 //여기
                 mLogin_Pregenter.goToMs();
-
 
 
             } else {
@@ -133,15 +132,17 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     };
 
 
+
+
     // 여기서부터 kakao
-    void kakao(){
+    void kakao() {
         //카카오 세션있을시 자동로그인
         Session.getCurrentSession().checkAndImplicitOpen();
         //카카오 앱 종료후 다시 켰을때 피드(?)바뀐 후 세션 여부 묻기
         if (!Session.getCurrentSession().isOpenable()) {
-            String checkToken = sharedPreferenceUtil.getSharedPreference(ActivityLogin.this,"kakaoRefreshToken");
+            String checkToken = sharedPreferenceUtil.getSharedPreference("kakaoRefreshToken");
             String getKakaoToken = Session.getCurrentSession().getTokenInfo().getRefreshToken();
-            Log.d("logout", "kakao: "+checkToken);
+            Log.d("logout", "kakao: " + checkToken);
             try {
 
                 if (checkToken.equals(getKakaoToken)) {
@@ -175,10 +176,10 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
             requestMe();
             kakaoAcessToken = Session.getCurrentSession().getTokenInfo().getAccessToken();
             kakaoRefreshToken = Session.getCurrentSession().getTokenInfo().getRefreshToken();
-            Log.d("token", "onSessionOpened:/Acess "+kakaoAcessToken);
-            Log.d("token", "onSessionOpened:/Refresh "+kakaoRefreshToken);
+            Log.d("token", "onSessionOpened:/Acess " + kakaoAcessToken);
+            Log.d("token", "onSessionOpened:/Refresh " + kakaoRefreshToken);
 
-            sharedPreferenceUtil.putSharedPreference(ActivityLogin.this,"kakaoRefreshToken",kakaoRefreshToken);
+            sharedPreferenceUtil.putSharedPreference("kakaoRefreshToken", kakaoRefreshToken);
         }
 
         // 로그인에 실패한 상태
@@ -209,20 +210,8 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
                 @Override
                 public void onSuccess(UserProfile userProfile) {
                     Log.e("SessionCallback :: ", "onSuccess");
-                    String nickname = userProfile.getNickname();
-                    String email = userProfile.getEmail();
-                    String profileImagePath = userProfile.getProfileImagePath();
-                    String thumnailPath = userProfile.getThumbnailImagePath();
-                    String UUID = userProfile.getUUID();
-                    long id = userProfile.getId();
-                    Log.e("Profile : ", nickname + "");
-                    Log.e("Profile : ", email + "");
-                    Log.e("Profile : ", profileImagePath + "");
-                    Log.e("Profile : ", thumnailPath + "");
-                    Log.e("Profile : ", UUID + "");
-                    Log.e("Profile : ", id + "");
 
-                flagIntent(ActivityLogin.this,ActivityMain.class);
+                    flagIntent(ActivityLogin.this, ActivityMain.class);
                 }
 
                 // 사용자 정보 요청 실패
@@ -267,7 +256,6 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     @Override
     public void goToMainScreen() {
         startActivity(new Intent(this, ActivityMain.class));
-        finish();
     }
 
     @Override
@@ -280,8 +268,8 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
         finish();
     }
 
-    void flagIntent(Context context, Class<ActivityMain> activity){
-        Intent intent = new Intent(context,activity);
+    void flagIntent(Context context, Class<ActivityMain> activity) {
+        Intent intent = new Intent(context, activity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

@@ -20,6 +20,7 @@ import com.example.admin.last.databinding.ActivityMainBinding;
 import com.example.admin.last.mainfragment.FragmentBroadcastEnd;
 import com.example.admin.last.mainfragment.FragmentBroadcastIng;
 import com.example.admin.last.profileMvp.FragmentProfile;
+import com.kakao.kakaotalk.v2.KakaoTalkService;
 import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
 
@@ -192,18 +193,21 @@ public class ActivityMain extends AppCompatActivity implements BottomNavigationV
 
                     slideDown(mView);
                     slideDown(mlinId);
-
+                    mView.getMenu().findItem(R.id.action_profile).setEnabled(false);
+                    mView.getMenu().findItem(R.id.action_ing).setEnabled(false);
+                    mView.getMenu().findItem(R.id.action_end).setEnabled(false);
 
 
                 } else if (dy < 0) {
 
                     slideUp(mView);
                     slideUp(mlinId);
-
+                    mView.getMenu().findItem(R.id.action_profile).setEnabled(true);
+                    mView.getMenu().findItem(R.id.action_ing).setEnabled(true);
+                    mView.getMenu().findItem(R.id.action_end).setEnabled(true);
                 }
             }
         });
-
     }
 
     public void slideDown(final View view) {
