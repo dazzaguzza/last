@@ -8,8 +8,9 @@ import com.example.admin.last.SharedPreferenceUtil;
 
 public interface ProfileModel {
     void tryNaverLogout(Context context);
-    String checkToken(Context context,String key);
-    void setNullRefreshToken(Context context,String key);
+    String checkKakaoToken(Context context);
+    String checkNaverToken(Context context);
+    void setNullRefreshKakaoToken(Context context);
+    void setNullRefreshNaverToken(Context context);
     void setKakaoProfileRenew(Context context, TextView textView, ImageView imageView);
-   // void setNaverProfileRenew(Context context, TextView textView, ImageView imageView);
 }

@@ -22,29 +22,29 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     @Override
-    public void kakaoLogout(Context context,String key) {
-        mProfileModel.setNullRefreshToken(context,key);
+    public void kakaoLogout(Context context) {
+        mProfileModel.setNullRefreshKakaoToken(context);
         mProfileView.goToLogin();
     }
 
     @Override
-    public void naverLogout(Context context,String key) {
-        mProfileModel.setNullRefreshToken(context,key);
+    public void naverLogout(Context context) {
+        mProfileModel.setNullRefreshNaverToken(context);
         mProfileModel.tryNaverLogout(context);
         mProfileView.goToLogin();
     }
 
     @Override
-    public void setUserInfo(Context context,String naver,String kakao) {
-        if(mProfileModel.checkToken(context,naver) != null
-                && mProfileModel.checkToken(context,kakao) == null){
+    public void setUserInfo(Context context) {
+        if(mProfileModel.checkNaverToken(context) != null
+                && mProfileModel.checkKakaoToken(context) == null){
             mProfileView.naverButtonShow();
             mProfileView.kakaoButtonHide();
             mProfileView.logingNaver();
             RequestApiTask requestApiTask = new RequestApiTask(context);
             requestApiTask.execute();
-        }else if(mProfileModel.checkToken(context,kakao) != null
-                && mProfileModel.checkToken(context,naver) == null){
+        }else if(mProfileModel.checkKakaoToken(context) != null
+                && mProfileModel.checkNaverToken(context) == null){
             mProfileView.kakaoButtonShow();
             mProfileView.naverButtonHide();
             mProfileView.logingKaKao();

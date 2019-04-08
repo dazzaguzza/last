@@ -1,4 +1,4 @@
-package com.example.admin.last;
+package com.example.admin.last.broadcastIngMvp;
 
 public class ItemIng {
 

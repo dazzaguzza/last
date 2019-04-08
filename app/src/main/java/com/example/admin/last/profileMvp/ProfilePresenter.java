@@ -6,9 +6,9 @@ import android.view.View;
 import com.example.admin.last.SharedPreferenceUtil;
 
 public interface ProfilePresenter {
-    void kakaoLogout(Context context,String key);
-    void naverLogout(Context context,String key);
-    void setUserInfo(Context context,String naver,String kakao);
+    void kakaoLogout(Context context);
+    void naverLogout(Context context);
+    void setUserInfo(Context context);
     void roundImg(View view);
 
 }

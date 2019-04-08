@@ -18,9 +18,8 @@ import android.widget.RelativeLayout;
 import com.example.admin.last.bottomnavigatation.CurvedBottomNavigationView;
 import com.example.admin.last.databinding.ActivityMainBinding;
 import com.example.admin.last.mainfragment.FragmentBroadcastEnd;
-import com.example.admin.last.mainfragment.FragmentBroadcastIng;
+import com.example.admin.last.broadcastIngMvp.FragmentBroadcastIng;
 import com.example.admin.last.profileMvp.FragmentProfile;
-import com.kakao.kakaotalk.v2.KakaoTalkService;
 import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
 

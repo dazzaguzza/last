@@ -30,15 +30,27 @@ public class ProfileModelImpl implements ProfileModel{
     }
 
     @Override
-    public String checkToken(Context context, String key) {
+    public String checkKakaoToken(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        return sharedPreferenceUtil.getSharedPreference(key);
+        return sharedPreferenceUtil.getSharedPreference("kakaoRefreshToken");
     }
 
     @Override
-    public void setNullRefreshToken(Context context, String key) {
+    public String checkNaverToken(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference(key,null);
+        return sharedPreferenceUtil.getSharedPreference("naverRefreshToken");
+    }
+
+    @Override
+    public void setNullRefreshKakaoToken(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("kakaoRefreshToken",null);
+    }
+
+    @Override
+    public void setNullRefreshNaverToken(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverRefreshToken",null);
     }
 
     @Override

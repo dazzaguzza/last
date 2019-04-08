@@ -245,11 +245,6 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     }
     //여기까지 kakao
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mLogin_Pregenter.getRequest_result(requestCode, permissions, grantResults);
-    }
 
     //MVP view override
 

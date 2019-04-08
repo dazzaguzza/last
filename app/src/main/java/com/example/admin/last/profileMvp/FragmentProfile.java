@@ -33,8 +33,6 @@ public class FragmentProfile extends Fragment implements ProfileView {
 
     private FragmentProfileBinding binding;
     ProfilePresenter mProfilePresenter;
-    public static OAuthLogin mOAuthLoginModule;
-
 
     public FragmentProfile() {
         // Required empty public constructor
@@ -51,7 +49,7 @@ public class FragmentProfile extends Fragment implements ProfileView {
         mProfilePresenter = new ProfilePresenterImpl(this);
 
         mProfilePresenter.roundImg(binding.imgProfile);
-        mProfilePresenter.setUserInfo(getActivity(), "naverRefreshToken", "kakaoRefreshToken");
+        mProfilePresenter.setUserInfo(getActivity());
 
         binding.btnKakaoLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +57,7 @@ public class FragmentProfile extends Fragment implements ProfileView {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
-                        mProfilePresenter.kakaoLogout(getActivity(), "kakaoRefreshToken");
+                        mProfilePresenter.kakaoLogout(getActivity());
                     }
                 });
             }
@@ -71,14 +69,11 @@ public class FragmentProfile extends Fragment implements ProfileView {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mProfilePresenter.naverLogout(getActivity(),"naverRefreshToken");
+                        mProfilePresenter.naverLogout(getActivity());
                     }
                 }).start();
             }
         });
-
-        mOAuthLoginModule = OAuthLogin.getInstance();
-        mOAuthLoginModule.init(getActivity(), "AvoGTmzyF6tLpxThYQQA", "kRB8dgvq7D", "dazzaguzza");
 
         return view;
     }
