@@ -188,7 +188,7 @@ public class ActivityMain extends AppCompatActivity implements BottomNavigationV
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && mView.isShown()) {
+                if (dy > 0) {
 
                     slideDown(mView);
                     slideDown(mlinId);
@@ -223,7 +223,7 @@ public class ActivityMain extends AppCompatActivity implements BottomNavigationV
             public void run() {
                 view.setVisibility(View.GONE);
             }
-        }, 500);
+        }, 1000);
     }
 
     public void slideUp(View view) {

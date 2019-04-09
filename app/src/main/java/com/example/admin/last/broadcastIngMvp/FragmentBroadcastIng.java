@@ -77,7 +77,7 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView{
 
         mBroadcastIngPresenter.setRecyclerView();
 
-        bus.bus(binding.recycler);
+       // bus.bus(binding.recycler);
 
 
         arrayList.add(new ItemIng("1",null));
