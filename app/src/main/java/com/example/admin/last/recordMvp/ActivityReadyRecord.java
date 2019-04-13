@@ -1,18 +1,22 @@
 package com.example.admin.last.recordMvp;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.TextureView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.ActivityReadyRecordBinding;
+import com.pedro.encoder.input.video.Camera2ApiManager;
 import com.pedro.rtplibrary.rtmp.RtmpCamera2;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
@@ -36,6 +40,10 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
 
         binding.textureView.setSurfaceTextureListener(this);
 
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        int orientation = windowManager.getDefaultDisplay().getRotation();
+        Log.e("TTTTT", "RRRRRRRRRR" + orientation);
+
         binding.bStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,15 +51,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
                     if (rtmpCamera2.isRecording()
                             || rtmpCamera2.prepareAudio() && rtmpCamera2.prepareVideo()) {
                         binding.bStartStop.setImageResource(R.drawable.recording);
-                      //  binding.bStartStop.setBackgroundColor(00000000);
-                        rtmpCamera2.startStream("rtmp://52.79.243.140/live/stream");
+                        rtmpCamera2.startStream("rtmp://52.79.243.140/live/stream3");
 
                     } else {
                         Toast.makeText(ActivityReadyRecord.this, "Error preparing stream, This device cant do it", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.bStartStop.setImageResource(R.drawable.record);
-                  //  binding.bStartStop.setBackgroundColor(00000000);
                     rtmpCamera2.stopStream();
                 }
             }
@@ -67,13 +73,14 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+       int width = size.x;
+        int height = size.y;
 
-        int width = dm.widthPixels;
 
-        int height = dm.heightPixels;
-
-        binding.textureView.setAspectRatio(460, height);
+        binding.textureView.setAspectRatio(width, height);
     }
 
     @Override
@@ -153,4 +160,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        int orientation = windowManager.getDefaultDisplay().getRotation();
+        Log.e("TTTTT", "RRRRRRRRRR" + orientation);
+    }
 }
