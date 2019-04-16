@@ -39,8 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".recordMvp.ActivityReadyRecord"
-            android:configChanges="orientation"
-            android:screenOrientation="landscape">
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

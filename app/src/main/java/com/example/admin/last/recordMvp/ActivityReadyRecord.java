@@ -1,64 +1,74 @@
 package com.example.admin.last.recordMvp;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
-import android.graphics.Point;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
+import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.ActivityReadyRecordBinding;
-import com.pedro.encoder.input.video.Camera2ApiManager;
-import com.pedro.rtplibrary.rtmp.RtmpCamera2;
+import com.example.admin.last.retrofit.ApiClient;
+import com.example.admin.last.retrofit.ApiInterface;
+import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
-public class ActivityReadyRecord extends AppCompatActivity implements recordView,ConnectCheckerRtmp, TextureView.SurfaceTextureListener{
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ActivityReadyRecord extends AppCompatActivity implements RecordView,ConnectCheckerRtmp, TextureView.SurfaceTextureListener{
 
     ActivityReadyRecordBinding binding;
-    recordPresenter mRecordPresenter;
-    private RtmpCamera2 rtmpCamera2;
+    RecordPresenter mRecordPresenter;
+    private RtmpCamera1 rtmpCamera1;
+    public static ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ready_record);
 
-        mRecordPresenter = new recordPresenterImpl(this);
+        mRecordPresenter = new RecordPresenterImpl(this);
 
         mRecordPresenter.getRequest_permission(ActivityReadyRecord.this);
 
-        rtmpCamera2 = new RtmpCamera2(binding.textureView, this);
+        rtmpCamera1 = new RtmpCamera1(binding.textureView, this);
 
         binding.textureView.setSurfaceTextureListener(this);
 
-        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        int orientation = windowManager.getDefaultDisplay().getRotation();
-        Log.e("TTTTT", "RRRRRRRRRR" + orientation);
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+
 
         binding.bStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!rtmpCamera2.isStreaming()) {
-                    if (rtmpCamera2.isRecording()
-                            || rtmpCamera2.prepareAudio() && rtmpCamera2.prepareVideo()) {
+                if (!rtmpCamera1.isStreaming()) {
+                    if (rtmpCamera1.isRecording()
+                            || rtmpCamera1.prepareAudio() && rtmpCamera1.prepareVideo()) {
+                        binding.txt1.setVisibility(View.GONE);
+                        binding.txt2.setVisibility(View.GONE);
+                        binding.image1.setVisibility(View.GONE);
                         binding.bStartStop.setImageResource(R.drawable.recording);
-                        rtmpCamera2.startStream("rtmp://52.79.243.140/live/stream3");
+                        rtmpCamera1.startStream("rtmp://52.79.243.140/live/stream3");
 
                     } else {
                         Toast.makeText(ActivityReadyRecord.this, "Error preparing stream, This device cant do it", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.bStartStop.setImageResource(R.drawable.record);
-                    rtmpCamera2.stopStream();
+                    rtmpCamera1.stopStream();
                 }
             }
         });
@@ -73,29 +83,22 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-       int width = size.x;
-        int height = size.y;
 
-
-        binding.textureView.setAspectRatio(width, height);
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-        rtmpCamera2.startPreview();
+        rtmpCamera1.startPreview();
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-        if (rtmpCamera2.isStreaming()) {
-            rtmpCamera2.stopStream();
+        if (rtmpCamera1.isStreaming()) {
+            rtmpCamera1.stopStream();
             binding.bStartStop.setImageResource(R.drawable.record);
          //   binding.bStartStop.setBackgroundColor(00000000);
         }
-        rtmpCamera2.stopPreview();
+        rtmpCamera1.stopPreview();
 
         return true;
     }
@@ -110,6 +113,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                startStream();
                 Toast.makeText(ActivityReadyRecord.this, "방송을 시작합니다", Toast.LENGTH_SHORT)
                         .show();
             }
@@ -123,7 +127,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
             public void run() {
                 Toast.makeText(ActivityReadyRecord.this, "문제가 발생하였습니다",
                         Toast.LENGTH_SHORT).show();
-                rtmpCamera2.stopStream();
+                rtmpCamera1.stopStream();
                 binding.bStartStop.setImageResource(R.drawable.record);
                // binding.bStartStop.setBackgroundColor(00000000);
             }
@@ -165,8 +169,22 @@ public class ActivityReadyRecord extends AppCompatActivity implements recordView
     protected void onResume() {
         super.onResume();
 
-        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        int orientation = windowManager.getDefaultDisplay().getRotation();
-        Log.e("TTTTT", "RRRRRRRRRR" + orientation);
+
     }
+
+    void startStream(){
+        Call<RecordData> call = apiInterface.setStream("rtmp://52.79.243.140/live/stream3","im");
+       call.enqueue(new Callback<RecordData>() {
+           @Override
+           public void onResponse(Call<RecordData> call, Response<RecordData> response) {
+               Log.d("TAG", "onResponse: 전송됨");
+           }
+
+           @Override
+           public void onFailure(Call<RecordData> call, Throwable t) {
+               Log.d("TAG", "onResponse: 실패");
+           }
+       });
+    }
+
 }

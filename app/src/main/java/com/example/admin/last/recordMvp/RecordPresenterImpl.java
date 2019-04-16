@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 
-public class recordPresenterImpl implements recordPresenter {
+public class RecordPresenterImpl implements RecordPresenter {
 
-    recordView mRecordView;
-    recordModel mRecordModel;
+    RecordView mRecordView;
+    RecordModel mRecordModel;
 
-    public recordPresenterImpl(recordView mRecordView) {
+    public RecordPresenterImpl(RecordView mRecordView) {
         this.mRecordView = mRecordView;
-        mRecordModel = new recordModelImpl();
+        mRecordModel = new RecordModelImpl();
     }
 
     @Override
