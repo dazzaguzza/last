@@ -2,6 +2,8 @@ package com.example.admin.last.broadcastIngMvp;
 
 import android.support.design.widget.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class broadcastIngPresenterImpl implements broadcastIngPresenter{
 
     broadcastIngView mBroadcastIngView;
@@ -19,12 +21,26 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter{
 
     @Override
     public void startFloatingAction(FloatingActionButton floatingActionButton, int dx, int dy) {
-        mBroadcastIngModel.floatingAction(floatingActionButton,dx,dy,mBroadcastIngView);
+
+        if (dy<0 && !floatingActionButton.isShown()) {
+
+            mBroadcastIngView.makeShowFloating();
+
+        }else if(dy>0 && floatingActionButton.isShown()) {
+
+            mBroadcastIngView.makeHideFloating();
+
+        }
     }
 
     @Override
     public void clickedBroadcastFloating() {
         mBroadcastIngView.clickBroadcast();
+    }
+
+    @Override
+    public void setAllStreamingRoom(ArrayList arrayList, AdapterIng adapterIng) {
+        mBroadcastIngModel.getAllStreamingRoom(arrayList, adapterIng);
     }
 
 }

@@ -28,7 +28,7 @@
         android:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/camera"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/com_kakao_brown"
         />
 
     </FrameLayout>

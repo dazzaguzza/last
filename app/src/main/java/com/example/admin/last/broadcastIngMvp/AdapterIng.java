@@ -2,15 +2,19 @@ package com.example.admin.last.broadcastIngMvp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.admin.last.R;
+import com.example.admin.last.watchMvp.ActivityWatch;
 
 import java.util.ArrayList;
 
@@ -34,13 +38,23 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(AdapterIng.MyViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterIng.MyViewHolder holder, final int position) {
 
-        ItemIng data = arrayList.get(position);
+        final ItemIng data = arrayList.get(position);
 
         holder.tv_txt_id.setText(data.getTxt_id());
 
         Glide.with(context).load(data.getImg_contents()).into(holder.tv_img_contents);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,ActivityWatch.class);
+                intent.putExtra("url",data.getTxt_id());
+                context.startActivity(intent);
+                Log.d("TAG", "onClick: "+data.getTxt_id());
+            }
+        });
 
     }
 
@@ -54,6 +68,7 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder>{
 
         TextView tv_txt_id;
         ImageView tv_img_contents;
+
 
         public MyViewHolder(View itemView) {
             super(itemView);

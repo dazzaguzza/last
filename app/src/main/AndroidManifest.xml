@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera2.full"/>
-    <uses-feature android:name="android.hardware.camera2.autofocus"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera2.full" />
+    <uses-feature android:name="android.hardware.camera2.autofocus" />
 
     <application
         android:name=".kakaoLoginClass.GlobalApplication"
@@ -38,8 +39,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".recordMvp.ActivityReadyRecord"
+        <activity
+            android:name=".recordMvp.ActivityReadyRecord"
             android:configChanges="keyboardHidden|orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".watchMvp.ActivityWatch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

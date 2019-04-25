@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,16 @@ import android.view.ViewGroup;
 import com.example.admin.last.recordMvp.ActivityReadyRecord;
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.FragmentBroadcastIngBinding;
+import com.example.admin.last.recordMvp.RecordData;
+import com.example.admin.last.retrofit.ApiClient;
+import com.example.admin.last.retrofit.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -31,6 +40,8 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView{
     broadcastIngPresenter mBroadcastIngPresenter;
     ArrayList<ItemIng> arrayList = new ArrayList<>();
     bus bus;
+    public static ApiInterface apiInterface;
+
 
     @Override
     public void makeRecyclerView() {
@@ -77,19 +88,10 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView{
 
         mBroadcastIngPresenter.setRecyclerView();
 
+
+
        // bus.bus(binding.recycler);
-
-
-        arrayList.add(new ItemIng("1",null));
-        arrayList.add(new ItemIng("1",null));
-        arrayList.add(new ItemIng("1",null));
-        arrayList.add(new ItemIng("1",null));
-        arrayList.add(new ItemIng("1",null));
-
-
-
-        adapter_ing.notifyDataSetChanged();
-
+        mBroadcastIngPresenter.setAllStreamingRoom(arrayList,adapter_ing);
 
 
         binding.recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {

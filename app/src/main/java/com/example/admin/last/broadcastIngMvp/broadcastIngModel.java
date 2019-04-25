@@ -1,7 +1,7 @@
 package com.example.admin.last.broadcastIngMvp;
 
-import android.support.design.widget.FloatingActionButton;
+import java.util.ArrayList;
 
 public interface broadcastIngModel {
-    void floatingAction(FloatingActionButton floatingActionButton, int dx, int dy, final broadcastIngView broadcastIngView);
+    void getAllStreamingRoom(ArrayList arrayList,final AdapterIng adapterIng);
 }

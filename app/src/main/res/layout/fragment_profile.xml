@@ -67,7 +67,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_marginTop="60dp"
-                                    android:text="아이디"
+                                    tools:text="아이디"
                                     android:textSize="25sp"
                                     android:textStyle="bold" />
 
