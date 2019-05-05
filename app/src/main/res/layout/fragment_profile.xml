@@ -39,7 +39,7 @@
                         android:layout_centerHorizontal="true"
                         android:elevation="1dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/sa" />
+                        tools:src="@drawable/sa" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -55,6 +55,13 @@
                             app:contentPaddingLeft="15dp"
                             app:contentPaddingRight="15dp"
                             app:contentPaddingTop="15dp">
+
+                            <ImageButton
+                                android:id="@+id/renew"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="#ffffff"
+                                android:src="@drawable/ic_autorenew_black_24dp"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -83,7 +90,7 @@
                                         android:id="@+id/txt_loginWhat"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="네이버"
+                                        tools:text="네이버"
                                         android:textSize="17sp"
                                         android:textStyle="bold" />
 

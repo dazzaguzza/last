@@ -83,7 +83,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mRecordPresenter.startStreamPhp();
+                mRecordPresenter.startStreamPhp(ActivityReadyRecord.this);
 
             }
         });
@@ -167,6 +167,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         binding.txt1.setVisibility(View.GONE);
         binding.txt2.setVisibility(View.GONE);
         binding.image1.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void viewShow() {
+        binding.txt1.setVisibility(View.VISIBLE);
+        binding.txt2.setVisibility(View.VISIBLE);
+        binding.image1.setVisibility(View.VISIBLE);
     }
 
     @Override

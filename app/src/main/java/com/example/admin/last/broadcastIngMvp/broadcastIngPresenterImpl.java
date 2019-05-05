@@ -1,6 +1,7 @@
 package com.example.admin.last.broadcastIngMvp;
 
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,11 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter{
     @Override
     public void setAllStreamingRoom(ArrayList arrayList, AdapterIng adapterIng) {
         mBroadcastIngModel.getAllStreamingRoom(arrayList, adapterIng);
+    }
+
+    @Override
+    public void setRefreshListner() {
+        mBroadcastIngView.setRefresh();
     }
 
 }

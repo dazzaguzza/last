@@ -13,6 +13,9 @@ public interface ProfileView {
     void makeRoundImg(View view);
     void logingNaver();
     void logingKaKao();
-    TextView setId();
-    ImageView setProfileImg();
+    void setId(String string);
+    void setProfileImg(String string);
+    void hideProfileImg();
+    void showProfileImg();
+
 }

@@ -6,6 +6,7 @@ public interface RecordView {
    void sayStreaming();
    void sayStreamEnd();
    void viewGone();
+   void viewShow();
    void setRecordImg();
    void setRecordingImg();
    RtmpCamera1 setTexturView();

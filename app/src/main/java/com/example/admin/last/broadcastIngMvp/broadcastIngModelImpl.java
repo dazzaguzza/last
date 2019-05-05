@@ -26,14 +26,19 @@ public class broadcastIngModelImpl implements broadcastIngModel {
         call.enqueue(new Callback<List<RoomData>>() {
             @Override
             public void onResponse(Call<List<RoomData>> call, Response<List<RoomData>> response) {
-                Log.d("TAG", "onResponse: okok");
+
+                arrayList.clear();
+
                 try{
                     for (int i = 0; i < response.body().size(); i++) {
-                        arrayList.add(new ItemIng(response.body().get(i).getUrl(),response.body().get(i).imgPath, "0"));
-                        adapterIng.notifyDataSetChanged();
+
+                        arrayList.add(new ItemIng(response.body().get(i).profileImg,response.body().get(i).id,response.body().get(i).imgPath, response.body().get(i).url,response.body().get(i).key));
+
                         Log.d("TAG", "onResponse: "+response.body().get(i).getUrl());
+                        Log.d("TAG", "onResponse: "+response.body().get(i).imgPath);
 
                     }
+                  adapterIng.notifyDataSetChanged();
                 }catch (Exception e){
 
                 }

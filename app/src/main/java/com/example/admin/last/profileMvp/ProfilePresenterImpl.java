@@ -6,7 +6,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.example.admin.last.R;
 import com.example.admin.last.SharedPreferenceUtil;
+import com.kakao.kakaotalk.callback.TalkResponseCallback;
+import com.kakao.kakaotalk.response.KakaoTalkProfile;
+import com.kakao.kakaotalk.v2.KakaoTalkService;
+import com.kakao.network.ErrorResult;
 import com.nhn.android.naverlogin.OAuthLogin;
 
 import org.json.JSONObject;
@@ -25,6 +30,9 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public void kakaoLogout(Context context) {
         mProfileModel.setNullRefreshKakaoToken(context);
         mProfileView.goToLogin();
+        mProfileModel.setRenewUserId(context,null);
+        mProfileModel.setRenewUserImg(context,null);
+
     }
 
     @Override
@@ -32,24 +40,48 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         mProfileModel.setNullRefreshNaverToken(context);
         mProfileModel.tryNaverLogout(context);
         mProfileView.goToLogin();
+        mProfileModel.setRenewUserId(context,null);
+        mProfileModel.setRenewUserImg(context,null);
     }
 
     @Override
     public void setUserInfo(Context context) {
         if(mProfileModel.checkNaverToken(context) != null
                 && mProfileModel.checkKakaoToken(context) == null){
-            mProfileView.naverButtonShow();
-            mProfileView.kakaoButtonHide();
-            mProfileView.logingNaver();
-            RequestApiTask requestApiTask = new RequestApiTask(context);
-            requestApiTask.execute();
+
+                mProfileView.naverButtonShow();
+                mProfileView.kakaoButtonHide();
+                mProfileView.logingNaver();
+
+            if (mProfileModel.getUserId(context) != null) {
+                mProfileView.setId(mProfileModel.getUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+
+            }else{
+                mProfileView.setId("새로고침을 눌러주세요");
+                mProfileView.setProfileImg(null);
+                mProfileView.hideProfileImg();
+            }
+
+
         }else if(mProfileModel.checkKakaoToken(context) != null
-                && mProfileModel.checkNaverToken(context) == null){
+                && mProfileModel.checkNaverToken(context) == null) {
+
             mProfileView.kakaoButtonShow();
             mProfileView.naverButtonHide();
             mProfileView.logingKaKao();
-            mProfileModel.setKakaoProfileRenew(context,mProfileView.setId(),mProfileView.setProfileImg());
+
+            if (mProfileModel.getUserId(context) != null) {
+                mProfileView.setId(mProfileModel.getUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+
+            }else{
+                mProfileView.setId("새로고침을 눌러주세요");
+                mProfileView.setProfileImg(null);
+                mProfileView.hideProfileImg();
+            }
         }
+
     }
 
     @Override
@@ -57,6 +89,47 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         mProfileView.makeRoundImg(view);
     }
 
+    @Override
+    public void profileRenew(final Context context) {
+
+        if(mProfileModel.checkNaverToken(context) != null
+                && mProfileModel.checkKakaoToken(context) == null){
+
+            RequestApiTask requestApiTask = new RequestApiTask(context);
+            requestApiTask.execute();
+
+
+        }else if(mProfileModel.checkKakaoToken(context) != null
+                && mProfileModel.checkNaverToken(context) == null){
+
+            KakaoTalkService.getInstance().requestProfile(new TalkResponseCallback<KakaoTalkProfile>() {
+                @Override
+                public void onNotKakaoTalkUser() {
+
+                }
+
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+
+                }
+
+                @Override
+                public void onNotSignedUp() {
+
+                }
+
+                @Override
+                public void onSuccess(KakaoTalkProfile result) {
+                    mProfileModel.setRenewUserId(context,result.getNickName());
+                    mProfileModel.setRenewUserImg(context,result.getProfileImageUrl());
+                    mProfileView.setId(mProfileModel.getUserId(context));
+                    mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+                    mProfileView.showProfileImg();
+                }
+            });
+
+        }
+    }
 
 
     public class RequestApiTask extends AsyncTask<Void, Void, String> {
@@ -71,7 +144,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
         @Override
         protected void onPreExecute() {
-            mProfileView.setId().setText((String) "");
+            mProfileView.setId((String) "");
         }
 
         @Override
@@ -89,8 +162,13 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                 Log.d("TAG", "onPostExecute: "+response);
                 String id = response.getString("nickname");
                 String imgUrl = response.getString("profile_image");
-                mProfileView.setId().setText(id);
-                Glide.with(context).load(imgUrl).into(mProfileView.setProfileImg());
+
+                mProfileModel.setRenewUserId(context,id);
+                mProfileModel.setRenewUserImg(context,imgUrl);
+                mProfileView.setId(mProfileModel.getUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+                mProfileView.showProfileImg();
+
             }catch (Exception e){}
 
         }

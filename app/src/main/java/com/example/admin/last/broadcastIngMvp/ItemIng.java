@@ -2,12 +2,22 @@ package com.example.admin.last.broadcastIngMvp;
 
 public class ItemIng {
 
-    String txt_id,img_contents,url;
+    String img_profile,txt_id,img_contents,url,key;
 
-    public ItemIng(String txt_id, String img_contents, String url) {
+    public ItemIng(String img_prifle,String txt_id, String img_contents, String url,String key) {
+        this.img_profile = img_prifle;
         this.txt_id = txt_id;
         this.img_contents = img_contents;
         this.url = url;
+        this.key = key;
+    }
+
+    public String getImg_profile() {
+        return img_profile;
+    }
+
+    public void setImg_profile(String img_profile) {
+        this.img_profile = img_profile;
     }
 
     public String getTxt_id() {
@@ -32,5 +42,13 @@ public class ItemIng {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

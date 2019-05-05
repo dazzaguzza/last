@@ -19,9 +19,6 @@ public class ProfileModelImpl implements ProfileModel{
     public static OAuthLogin mOAuthLoginModule;
     SharedPreferenceUtil sharedPreferenceUtil;
 
-    public ProfileModelImpl() {
-    }
-
     @Override
     public void tryNaverLogout(Context context) {
         mOAuthLoginModule = OAuthLogin.getInstance();
@@ -41,6 +38,38 @@ public class ProfileModelImpl implements ProfileModel{
         return sharedPreferenceUtil.getSharedPreference("naverRefreshToken");
     }
 
+//    @Override
+//    public String checkLoginNaver(Context context) {
+//        mOAuthLoginModule = OAuthLogin.getInstance();
+//        String checkLoginNaver= mOAuthLoginModule.getState(context).toString();
+//        Log.d("TAG", "checkLoginNaver: "+checkLoginNaver);
+//        return checkLoginNaver;
+//    }
+
+    @Override
+    public String getUserId(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("UserId");
+    }
+
+    @Override
+    public String getUserImg(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("UserImg");
+    }
+
+    @Override
+    public void setRenewUserId(Context context,String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("UserId",string);
+    }
+
+    @Override
+    public void setRenewUserImg(Context context,String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("UserImg",string);
+    }
+
     @Override
     public void setNullRefreshKakaoToken(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
@@ -51,32 +80,6 @@ public class ProfileModelImpl implements ProfileModel{
     public void setNullRefreshNaverToken(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("naverRefreshToken",null);
-    }
-
-    @Override
-    public void setKakaoProfileRenew(final Context context,final TextView textView, final ImageView imageView) {
-        KakaoTalkService.getInstance().requestProfile(new TalkResponseCallback<KakaoTalkProfile>() {
-            @Override
-            public void onNotKakaoTalkUser() {
-
-            }
-
-            @Override
-            public void onSessionClosed(ErrorResult errorResult) {
-
-            }
-
-            @Override
-            public void onNotSignedUp() {
-
-            }
-
-            @Override
-            public void onSuccess(KakaoTalkProfile result) {
-                textView.setText(result.getNickName());
-                Glide.with(context).load(result.getProfileImageUrl()).error(R.drawable.sa).into(imageView);
-            }
-        });
     }
 
 }

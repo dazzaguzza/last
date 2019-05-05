@@ -21,6 +21,7 @@ import com.example.admin.last.ActivityMain;
 import com.example.admin.last.R;
 import com.example.admin.last.SharedPreferenceUtil;
 import com.example.admin.last.databinding.ActivityLoginBinding;
+import com.example.admin.last.kakaoLoginClass.SessionCallback;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -32,14 +33,13 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
+import com.nhn.android.naverlogin.data.OAuthLoginState;
 
 
 public class ActivityLogin extends AppCompatActivity implements LoginView {
 
     private LoginPersenter mLogin_Pregenter;
-    public static OAuthLogin mOAuthLoginModule;
     ActivityLoginBinding binding;
-    String kakaoAcessToken, kakaoRefreshToken;
     SharedPreferenceUtil sharedPreferenceUtil;
 
     Handler handler = new Handler();
@@ -63,165 +63,38 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
         }
 
         handler.postDelayed(runnable, 2000);
-        mLogin_Pregenter = new LoginPresenterImpl(this);
+        mLogin_Pregenter = new LoginPresenterImpl(this,ActivityLogin.this);
 
         kakao();
         naver();
     }
 
-    //네이버
+
     void naver() {
 
-        try {
-            mOAuthLoginModule = OAuthLogin.getInstance();
-            mOAuthLoginModule.init(this, "AvoGTmzyF6tLpxThYQQA", "kRB8dgvq7D", "dazzaguzza");
-            String refreshToken = mOAuthLoginModule.getRefreshToken(ActivityLogin.this);
-            String checkToken = sharedPreferenceUtil.getSharedPreference( "naverRefreshToken");
-            Log.d("refreshTokenNaver", "naver: " + refreshToken);
-
-            if (checkToken.equals(refreshToken)) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        flagIntent(ActivityLogin.this, ActivityMain.class);
-                    }
-                }, 1500);
-            }
-
-
-        } catch (Exception e) {
-        }
-
+        mLogin_Pregenter.checkNaverAutoLogin(ActivityLogin.this);
 
         binding.btnNaver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                naverLogin();
+                mLogin_Pregenter.naverLogin(ActivityLogin.this);
             }
         });
     }
 
 
-    private void naverLogin() {
-        mOAuthLoginModule.startOauthLoginActivity(this, mOAuthLoginHandler);
-    }
-
-    private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
-        @Override
-        public void run(boolean success) {
-            if (success) {
-                String accessToken = mOAuthLoginModule.getAccessToken(ActivityLogin.this);
-                String refreshToken = mOAuthLoginModule.getRefreshToken(ActivityLogin.this);
-                long expiresAt = mOAuthLoginModule.getExpiresAt(ActivityLogin.this);
-                String tokenType = mOAuthLoginModule.getTokenType(ActivityLogin.this);
-                String token = mOAuthLoginModule.getTokenType(ActivityLogin.this);
-
-                sharedPreferenceUtil.putSharedPreference("naverRefreshToken", refreshToken);
-
-                //여기
-                mLogin_Pregenter.goToMs();
-
-
-            } else {
-                String errorCode = mOAuthLoginModule.getLastErrorCode(ActivityLogin.this).getCode();
-                String errorDesc = mOAuthLoginModule.getLastErrorDesc(ActivityLogin.this);
-            }
-        }
-
-        ;
-    };
-
-
-
-
-    // 여기서부터 kakao
     void kakao() {
-        //카카오 세션있을시 자동로그인
-        Session.getCurrentSession().checkAndImplicitOpen();
-        //카카오 앱 종료후 다시 켰을때 피드(?)바뀐 후 세션 여부 묻기
-        if (!Session.getCurrentSession().isOpenable()) {
-            String checkToken = sharedPreferenceUtil.getSharedPreference("kakaoRefreshToken");
-            String getKakaoToken = Session.getCurrentSession().getTokenInfo().getRefreshToken();
-            Log.d("logout", "kakao: " + checkToken);
-            try {
 
-                if (checkToken.equals(getKakaoToken)) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            flagIntent(ActivityLogin.this, ActivityMain.class);
-                        }
-                    }, 1500);
-                }
+        mLogin_Pregenter.kakaoLogin(ActivityLogin.this);
 
-            } catch (Exception e) {
-            }
-
-        }
-
-        //카카오 버튼클릭시
         binding.btnKakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createKakaoSession();
+                mLogin_Pregenter.createKakaoSession();
             }
         });
     }
 
-    public class SessionCallback implements ISessionCallback {
-
-        // 로그인에 성공한 상태
-        @Override
-        public void onSessionOpened() {
-            requestMe();
-            kakaoAcessToken = Session.getCurrentSession().getTokenInfo().getAccessToken();
-            kakaoRefreshToken = Session.getCurrentSession().getTokenInfo().getRefreshToken();
-            Log.d("token", "onSessionOpened:/Acess " + kakaoAcessToken);
-            Log.d("token", "onSessionOpened:/Refresh " + kakaoRefreshToken);
-
-            sharedPreferenceUtil.putSharedPreference("kakaoRefreshToken", kakaoRefreshToken);
-        }
-
-        // 로그인에 실패한 상태
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
-        }
-
-        // 사용자 정보 요청
-        public void requestMe() {
-
-            // 사용자정보 요청 결과에 대한 Callback
-            UserManagement.getInstance().requestMe(new MeResponseCallback() {
-
-                // 세션 오픈 실패. 세션이 삭제된 경우,
-                @Override
-                public void onSessionClosed(ErrorResult errorResult) {
-                    Log.e("SessionCallback :: ", "onSessionClosed : " + errorResult.getErrorMessage());
-                }
-
-                // 회원이 아닌 경우,
-                @Override
-                public void onNotSignedUp() {
-                    Log.e("SessionCallback :: ", "onNotSignedUp");
-                }
-
-                // 사용자정보 요청에 성공한 경우,
-                @Override
-                public void onSuccess(UserProfile userProfile) {
-                    Log.e("SessionCallback :: ", "onSuccess");
-
-                    flagIntent(ActivityLogin.this, ActivityMain.class);
-                }
-
-                // 사용자 정보 요청 실패
-                @Override
-                public void onFailure(ErrorResult errorResult) {
-                    Log.e("SessionCallback :: ", "onFailure : " + errorResult.getErrorMessage());
-                }
-            });
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -235,18 +108,20 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Session.getCurrentSession().removeCallback(new SessionCallback());
+       mLogin_Pregenter.removeKakaoSession();
     }
 
-    void createKakaoSession() {
+    @Override
+    public void setCreateKakaoSession() {
         Session session = Session.getCurrentSession();
-        session.addCallback(new SessionCallback());
+        session.addCallback(new SessionCallback(ActivityLogin.this, ActivityMain.class));
         session.open(AuthType.KAKAO_LOGIN_ALL, ActivityLogin.this);
     }
-    //여기까지 kakao
 
-
-    //MVP view override
+    @Override
+    public void setRemoveKakaoSession() {
+        Session.getCurrentSession().removeCallback(new SessionCallback(ActivityLogin.this, ActivityMain.class));
+    }
 
     @Override
     public void goToMainScreen() {
@@ -263,10 +138,13 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
         finish();
     }
 
-    void flagIntent(Context context, Class<ActivityMain> activity) {
+    @Override
+    public void flagIntent(Context context, Class<ActivityMain> activity) {
         Intent intent = new Intent(context, activity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+
 
 }

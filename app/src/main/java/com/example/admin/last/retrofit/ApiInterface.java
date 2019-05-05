@@ -15,9 +15,14 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     @FormUrlEncoded
     @POST("streaming.php")
-    Call<RecordData> setStream(@Field("url") String url,@Field("key") String key);
+    Call<RecordData> setStream(@Field("img_profile") String img_profile,@Field("txt_id") String txt_id,@Field("url") String url,@Field("key") String key);
 
     @FormUrlEncoded
     @POST("getStreamingRoom.php")
     Call<List<RoomData>> getStreamingRoom(@Field("url") String url);
+
+    @FormUrlEncoded
+    @POST("doneStreaming.php")
+    Call<RecordData> stopStream(@Field("url") String url,@Field("key") String key);
+
 }

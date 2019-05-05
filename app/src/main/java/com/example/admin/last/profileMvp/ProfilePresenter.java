@@ -10,5 +10,6 @@ public interface ProfilePresenter {
     void naverLogout(Context context);
     void setUserInfo(Context context);
     void roundImg(View view);
+    void profileRenew(Context context);
 
 }

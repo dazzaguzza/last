@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.FragmentProfileBinding;
 import com.example.admin.last.loginMvp.ActivityLogin;
+import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
@@ -58,6 +60,7 @@ public class FragmentProfile extends Fragment implements ProfileView {
                     @Override
                     public void onCompleteLogout() {
                         mProfilePresenter.kakaoLogout(getActivity());
+                        Session.getCurrentSession().clearCallbacks();
                     }
                 });
             }
@@ -72,6 +75,13 @@ public class FragmentProfile extends Fragment implements ProfileView {
                         mProfilePresenter.naverLogout(getActivity());
                     }
                 }).start();
+            }
+        });
+
+        binding.renew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mProfilePresenter.profileRenew(getActivity());
             }
         });
 
@@ -125,13 +135,23 @@ public class FragmentProfile extends Fragment implements ProfileView {
     }
 
     @Override
-    public TextView setId() {
-        return binding.txtId;
+    public void setId(String string) {
+        binding.txtId.setText(string);
     }
 
     @Override
-    public ImageView setProfileImg() {
-        return binding.imgProfile;
+    public void setProfileImg(String string) {
+        Glide.with(getActivity()).load(string).into(binding.imgProfile);
+    }
+
+    @Override
+    public void hideProfileImg() {
+        binding.imgProfile.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProfileImg() {
+        binding.imgProfile.setVisibility(View.VISIBLE);
     }
 
 
