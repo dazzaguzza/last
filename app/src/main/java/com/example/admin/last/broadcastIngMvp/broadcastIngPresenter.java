@@ -1,5 +1,6 @@
 package com.example.admin.last.broadcastIngMvp;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
@@ -11,4 +12,5 @@ public interface broadcastIngPresenter {
     void clickedBroadcastFloating();
     void setAllStreamingRoom(ArrayList arrayList, AdapterIng adapterIng);
     void setRefreshListner();
+    void getProfile(Context context);
 }

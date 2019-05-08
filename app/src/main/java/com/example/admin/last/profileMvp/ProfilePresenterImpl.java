@@ -20,18 +20,24 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     ProfileView mProfileView;
     ProfileModel mProfileModel;
     OAuthLogin mOAuthLoginModule;
+    SharedPreferenceUtil sharedPreferenceUtil;
+    Context context;
+    String userId,userImg;
 
-    public ProfilePresenterImpl(ProfileView mProfileView) {
+    public ProfilePresenterImpl(ProfileView mProfileView, Context context) {
         this.mProfileView = mProfileView;
         mProfileModel = new ProfileModelImpl();
+        this.context = context;
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+
     }
 
     @Override
     public void kakaoLogout(Context context) {
         mProfileModel.setNullRefreshKakaoToken(context);
         mProfileView.goToLogin();
-        mProfileModel.setRenewUserId(context,null);
-        mProfileModel.setRenewUserImg(context,null);
+        mProfileModel.setKakaoRenewUserId(context, null);
+        mProfileModel.setKakaoRenewUserImg(context, null);
 
     }
 
@@ -40,48 +46,66 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         mProfileModel.setNullRefreshNaverToken(context);
         mProfileModel.tryNaverLogout(context);
         mProfileView.goToLogin();
-        mProfileModel.setRenewUserId(context,null);
-        mProfileModel.setRenewUserImg(context,null);
+        mProfileModel.setNaverRenewUserId(context, null);
+        mProfileModel.setNaverRenewUserImg(context, null);
     }
 
     @Override
     public void setUserInfo(Context context) {
-        if(mProfileModel.checkNaverToken(context) != null
-                && mProfileModel.checkKakaoToken(context) == null){
+        if (mProfileModel.checkNaverToken(context) != null
+                && mProfileModel.checkKakaoToken(context) == null) {
 
-                mProfileView.naverButtonShow();
-                mProfileView.kakaoButtonHide();
-                mProfileView.logingNaver();
+            mProfileView.naverButtonShow();
+            mProfileView.kakaoButtonHide();
+            mProfileView.logingNaver();
 
-            if (mProfileModel.getUserId(context) != null) {
-                mProfileView.setId(mProfileModel.getUserId(context));
-                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
-
-            }else{
-                mProfileView.setId("새로고침을 눌러주세요");
-                mProfileView.setProfileImg(null);
-                mProfileView.hideProfileImg();
+            if (mProfileModel.getNaverUserId(context) != null) {
+                mProfileView.setId(mProfileModel.getNaverUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getNaverUserImg(context));
+                Log.d("TAG", "setUserInfo: 네이버 저장 이미지");
+            } else {
+//                mProfileView.setId("새로고침을 눌러주세요");
+//                mProfileView.setProfileImg(null);
+//                mProfileView.hideProfileImg();
+                RequestApiTask requestApiTask = new RequestApiTask(context);
+                requestApiTask.execute();
+                Log.d("TAG", "setUserInfo: 네이버 신규 이미지");
             }
 
 
-        }else if(mProfileModel.checkKakaoToken(context) != null
+        } else if (mProfileModel.checkKakaoToken(context) != null
                 && mProfileModel.checkNaverToken(context) == null) {
 
             mProfileView.kakaoButtonShow();
             mProfileView.naverButtonHide();
             mProfileView.logingKaKao();
 
-            if (mProfileModel.getUserId(context) != null) {
-                mProfileView.setId(mProfileModel.getUserId(context));
-                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
-
-            }else{
-                mProfileView.setId("새로고침을 눌러주세요");
-                mProfileView.setProfileImg(null);
-                mProfileView.hideProfileImg();
+            if (mProfileModel.getKakaoUserId(context) != null) {
+                mProfileView.setId(mProfileModel.getKakaoUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getKakaoUserImg(context));
+                Log.d("TAG", "setUserInfo: 카카오톡 저장 이미지");
+            } else {
+//                mProfileView.setId("새로고침을 눌러주세요");
+//                mProfileView.setProfileImg(null);
+//                mProfileView.hideProfileImg();
+                profileRenew(context);
+                Log.d("TAG", "setUserInfo: 카카오톡 신규 이미지");
             }
         }
 
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        if(sharedPreferenceUtil.getSharedPreference("kakaoUserId") != null){
+
+            userId = sharedPreferenceUtil.getSharedPreference("kakaoUserId");
+            userImg = sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
+
+        }else if(sharedPreferenceUtil.getSharedPreference("naverUserId") != null){
+
+            userId = sharedPreferenceUtil.getSharedPreference("naverUserId");
+            userImg = sharedPreferenceUtil.getSharedPreference("naverUserImg");
+
+        }
+        Log.d("TAG", "setUserInfo: user"+userId+"/"+userImg);
     }
 
     @Override
@@ -92,15 +116,15 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     @Override
     public void profileRenew(final Context context) {
 
-        if(mProfileModel.checkNaverToken(context) != null
-                && mProfileModel.checkKakaoToken(context) == null){
+        if (mProfileModel.checkNaverToken(context) != null
+                && mProfileModel.checkKakaoToken(context) == null) {
 
             RequestApiTask requestApiTask = new RequestApiTask(context);
             requestApiTask.execute();
 
 
-        }else if(mProfileModel.checkKakaoToken(context) != null
-                && mProfileModel.checkNaverToken(context) == null){
+        } else if (mProfileModel.checkKakaoToken(context) != null
+                && mProfileModel.checkNaverToken(context) == null) {
 
             KakaoTalkService.getInstance().requestProfile(new TalkResponseCallback<KakaoTalkProfile>() {
                 @Override
@@ -120,10 +144,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
                 @Override
                 public void onSuccess(KakaoTalkProfile result) {
-                    mProfileModel.setRenewUserId(context,result.getNickName());
-                    mProfileModel.setRenewUserImg(context,result.getProfileImageUrl());
-                    mProfileView.setId(mProfileModel.getUserId(context));
-                    mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+                    mProfileModel.setKakaoRenewUserId(context, result.getNickName());
+                    mProfileModel.setKakaoRenewUserImg(context, result.getProfileImageUrl());
+                    mProfileView.setId(mProfileModel.getKakaoUserId(context));
+                    mProfileView.setProfileImg(mProfileModel.getKakaoUserImg(context));
                     mProfileView.showProfileImg();
                 }
             });
@@ -159,17 +183,19 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             try {
                 JSONObject jsonObject = new JSONObject(content);
                 JSONObject response = jsonObject.getJSONObject("response");
-                Log.d("TAG", "onPostExecute: "+response);
+                Log.d("TAG", "onPostExecute: " + response);
                 String id = response.getString("nickname");
                 String imgUrl = response.getString("profile_image");
 
-                mProfileModel.setRenewUserId(context,id);
-                mProfileModel.setRenewUserImg(context,imgUrl);
-                mProfileView.setId(mProfileModel.getUserId(context));
-                mProfileView.setProfileImg(mProfileModel.getUserImg(context));
+                mProfileModel.setNaverRenewUserId(context, id);
+                mProfileModel.setNaverRenewUserImg(context, imgUrl);
+                mProfileView.setId(mProfileModel.getNaverUserId(context));
+                mProfileView.setProfileImg(mProfileModel.getNaverUserImg(context));
                 mProfileView.showProfileImg();
 
-            }catch (Exception e){}
+
+            } catch (Exception e) {
+            }
 
         }
     }

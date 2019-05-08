@@ -22,20 +22,18 @@ public class LoginPresenterImpl implements LoginPersenter {
     LoginModel mLogin_model;
     Context context;
     public static OAuthLogin mOAuthLoginModule;
-    SharedPreferenceUtil sharedPreferenceUtil;
 
-    public LoginPresenterImpl(LoginView mLogin_View,Context context) {
+    public LoginPresenterImpl(LoginView mLogin_View, Context context) {
         this.mLogin_View = mLogin_View;
         mLogin_model = new LoginModelImpl();
         this.context = context;
-        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
     }
 
     @Override
     public void getRequest_permission(Activity activity) {
 
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA
-                ,Manifest.permission.RECORD_AUDIO}, 100);
+                , Manifest.permission.RECORD_AUDIO}, 100);
     }
 
     @Override
@@ -46,11 +44,11 @@ public class LoginPresenterImpl implements LoginPersenter {
                 && permissions[0].equals(Manifest.permission.CAMERA)
                 && permissions[1].equals(Manifest.permission.RECORD_AUDIO)
                 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED
-                && grantResults[1] ==PermissionChecker.PERMISSION_GRANTED) {
+                && grantResults[1] == PermissionChecker.PERMISSION_GRANTED) {
 
             mLogin_View.goToLoginScreen();
 
-        }else{
+        } else {
             mLogin_View.finishScreen();
         }
     }
@@ -68,13 +66,13 @@ public class LoginPresenterImpl implements LoginPersenter {
                     }
                 }, 1500);
 
-                Log.d("TAG", "kakaoLogin: 세션열림");
+
             } catch (Exception e) {
             }
-        }else{
+        } else {
             mLogin_model.setNullRefreshKakaoToken(context);
-            mLogin_model.setRenewUserId(context,null);
-            mLogin_model.setRenewUserImg(context,null);
+            mLogin_model.setKakaoRenewUserId(context, null);
+            mLogin_model.setKakaoRenewUserImg(context, null);
             Log.d("TAG", "kakaoLogin: 세션닫힘");
         }
     }
@@ -117,10 +115,11 @@ public class LoginPresenterImpl implements LoginPersenter {
                         mLogin_View.flagIntent(context, ActivityMain.class);
                     }
                 }, 1500);
-            }else{
+            } else if (status.toString().equals("NEED_LOGIN") || status.toString().equals("NEED_REFRESH_TOKEN") || status.toString().equals("NEED_INIT ")) {
                 mLogin_model.setNullRefreshNaverToken(context);
-                mLogin_model.setRenewUserId(context,null);
-                mLogin_model.setRenewUserImg(context,null);
+                mLogin_model.setNaverRenewUserId(context, null);
+                mLogin_model.setNaverRenewUserImg(context, null);
+                Log.d("TAG", "checkNaverAutoLogin: null");
             }
 
 
@@ -134,7 +133,7 @@ public class LoginPresenterImpl implements LoginPersenter {
             if (success) {
                 String refreshToken = mOAuthLoginModule.getRefreshToken(context);
 
-                mLogin_model.setNaverToken(context,refreshToken);
+                mLogin_model.setNaverToken(context, refreshToken);
 
                 //여기
                 mLogin_View.goToMainScreen();

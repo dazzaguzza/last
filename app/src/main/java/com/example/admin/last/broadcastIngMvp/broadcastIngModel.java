@@ -1,7 +1,19 @@
 package com.example.admin.last.broadcastIngMvp;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public interface broadcastIngModel {
     void getAllStreamingRoom(ArrayList arrayList,final AdapterIng adapterIng);
+    String checkKakaoToken(Context context);
+    String checkNaverToken(Context context);
+    String getKakaoUserId(Context context);
+    String getKakaoUserImg(Context context);
+    void setKakaoRenewUserId(Context context, String string);
+    void setKakaoRenewUserImg(Context context,String string);
+    String getNaverUserId(Context context);
+    String getNaverUserImg(Context context);
+    void setNaverRenewUserId(Context context,String string);
+    void setNaverRenewUserImg(Context context,String string);
 }

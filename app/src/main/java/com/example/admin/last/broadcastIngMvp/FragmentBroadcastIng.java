@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.admin.last.SharedPreferenceUtil;
 import com.example.admin.last.recordMvp.ActivityReadyRecord;
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.FragmentBroadcastIngBinding;
@@ -43,8 +44,6 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
     broadcastIngPresenter mBroadcastIngPresenter;
     ArrayList<ItemIng> arrayList = new ArrayList<>();
     bus bus;
-    public static ApiInterface apiInterface;
-
 
     @Override
     public void makeRecyclerView() {
@@ -101,12 +100,13 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
         View view = binding.getRoot();
 
 
-
         mBroadcastIngPresenter = new broadcastIngPresenterImpl(this);
 
         mBroadcastIngPresenter.setRefreshListner();
 
         mBroadcastIngPresenter.setRecyclerView();
+
+        mBroadcastIngPresenter.getProfile(getActivity());
 
 
         // bus.bus(binding.recycler);

@@ -1,9 +1,11 @@
 package com.example.admin.last.broadcastIngMvp;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
+import com.example.admin.last.SharedPreferenceUtil;
 import com.example.admin.last.recordMvp.RecordData;
 import com.example.admin.last.retrofit.ApiClient;
 import com.example.admin.last.retrofit.ApiInterface;
@@ -18,6 +20,7 @@ import retrofit2.Response;
 public class broadcastIngModelImpl implements broadcastIngModel {
 
     public static ApiInterface apiInterface;
+    SharedPreferenceUtil sharedPreferenceUtil;
 
     @Override
     public void getAllStreamingRoom(final ArrayList arrayList, final AdapterIng adapterIng) {
@@ -50,5 +53,65 @@ public class broadcastIngModelImpl implements broadcastIngModel {
                 Log.d("TAG", "onResponse: fail"+t);
             }
         });
+    }
+
+    @Override
+    public String checkKakaoToken(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("kakaoRefreshToken");
+    }
+
+    @Override
+    public String checkNaverToken(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverRefreshToken");
+    }
+
+    @Override
+    public String getKakaoUserId(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserId");
+    }
+
+    @Override
+    public String getKakaoUserImg(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
+    }
+
+    @Override
+    public void setKakaoRenewUserId(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserId",string);
+    }
+
+    @Override
+    public void setKakaoRenewUserImg(Context context,String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserImg",string);
+    }
+
+    @Override
+    public String getNaverUserId(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserId");
+    }
+
+    @Override
+    public String getNaverUserImg(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserImg");
+    }
+
+    @Override
+    public void setNaverRenewUserId(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserId",string);
+    }
+
+    @Override
+    public void setNaverRenewUserImg(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserImg",string);
     }
 }

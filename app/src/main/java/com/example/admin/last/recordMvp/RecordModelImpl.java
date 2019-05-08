@@ -19,12 +19,22 @@ public class RecordModelImpl implements RecordModel {
     public static ApiInterface apiInterface;
     String rtmpUrl="rtmp://52.79.243.140/live/";
     SharedPreferenceUtil sharedPreferenceUtil;
+    String userId,userImg;
 
     @Override
     public void setStream(Context context, String key) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        String userId = sharedPreferenceUtil.getSharedPreference("UserId");
-        String userImg = sharedPreferenceUtil.getSharedPreference("UserImg");
+        if(sharedPreferenceUtil.getSharedPreference("kakaoUserId") != null){
+
+             userId = sharedPreferenceUtil.getSharedPreference("kakaoUserId");
+             userImg = sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
+
+        }else if(sharedPreferenceUtil.getSharedPreference("naverUserId") != null){
+
+            userId = sharedPreferenceUtil.getSharedPreference("naverUserId");
+            userImg = sharedPreferenceUtil.getSharedPreference("naverUserImg");
+
+        }
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<RecordData> call = apiInterface.setStream(userImg,userId,rtmpUrl+key,key);

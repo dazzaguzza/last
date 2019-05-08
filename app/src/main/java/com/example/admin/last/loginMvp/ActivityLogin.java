@@ -40,7 +40,6 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
 
     private LoginPersenter mLogin_Pregenter;
     ActivityLoginBinding binding;
-    SharedPreferenceUtil sharedPreferenceUtil;
 
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -54,8 +53,6 @@ public class ActivityLogin extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
-        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             ((ViewGroup) findViewById(R.id.layout)).getLayoutTransition()

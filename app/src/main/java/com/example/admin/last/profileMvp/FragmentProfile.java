@@ -36,6 +36,7 @@ public class FragmentProfile extends Fragment implements ProfileView {
     private FragmentProfileBinding binding;
     ProfilePresenter mProfilePresenter;
 
+
     public FragmentProfile() {
         // Required empty public constructor
     }
@@ -48,7 +49,7 @@ public class FragmentProfile extends Fragment implements ProfileView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
 
         View view = binding.getRoot();
-        mProfilePresenter = new ProfilePresenterImpl(this);
+        mProfilePresenter = new ProfilePresenterImpl(this,getActivity());
 
         mProfilePresenter.roundImg(binding.imgProfile);
         mProfilePresenter.setUserInfo(getActivity());

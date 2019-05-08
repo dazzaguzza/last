@@ -15,16 +15,29 @@ public class LoginModelImpl implements LoginModel {
     }
 
     @Override
-    public void setRenewUserId(Context context,String string) {
+    public void setKakaoRenewUserId(Context context,String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference("UserId",string);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserId",string);
     }
 
     @Override
-    public void setRenewUserImg(Context context,String string) {
+    public void setKakaoRenewUserImg(Context context,String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference("UserImg",string);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserImg",string);
     }
+
+    @Override
+    public void setNaverRenewUserId(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserId",string);
+    }
+
+    @Override
+    public void setNaverRenewUserImg(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserImg",string);
+    }
+
 
     @Override
     public void setNullRefreshKakaoToken(Context context) {

@@ -47,27 +47,51 @@ public class ProfileModelImpl implements ProfileModel{
 //    }
 
     @Override
-    public String getUserId(Context context) {
+    public String getKakaoUserId(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        return sharedPreferenceUtil.getSharedPreference("UserId");
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserId");
     }
 
     @Override
-    public String getUserImg(Context context) {
+    public String getKakaoUserImg(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        return sharedPreferenceUtil.getSharedPreference("UserImg");
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
     }
 
     @Override
-    public void setRenewUserId(Context context,String string) {
+    public void setKakaoRenewUserId(Context context,String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference("UserId",string);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserId",string);
     }
 
     @Override
-    public void setRenewUserImg(Context context,String string) {
+    public void setKakaoRenewUserImg(Context context,String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference("UserImg",string);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserImg",string);
+    }
+
+    @Override
+    public String getNaverUserId(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserId");
+    }
+
+    @Override
+    public String getNaverUserImg(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserImg");
+    }
+
+    @Override
+    public void setNaverRenewUserId(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserId",string);
+    }
+
+    @Override
+    public void setNaverRenewUserImg(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserImg",string);
     }
 
     @Override
