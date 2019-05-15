@@ -16,11 +16,13 @@ public class RecordPresenterImpl implements RecordPresenter {
     RecordView mRecordView;
     RecordModel mRecordModel;
     String key;
+    Context context;
 
-    public RecordPresenterImpl(RecordView mRecordView) {
+    public RecordPresenterImpl(RecordView mRecordView,Context context) {
         this.mRecordView = mRecordView;
         mRecordModel = new RecordModelImpl();
-        key = mRecordModel.makeKey();
+        this.context = context;
+        key = mRecordModel.makeKey(context);
     }
 
     @Override
@@ -80,6 +82,8 @@ public class RecordPresenterImpl implements RecordPresenter {
             } else {
                 mRecordView.setRecordImg();
                 mRecordModel.stopStreamCamera1(rtmpCamera1,key);
+                mRecordView.showDialog();
+
             }
         } catch (Exception e) {
         }

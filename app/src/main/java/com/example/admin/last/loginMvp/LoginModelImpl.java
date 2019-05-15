@@ -50,4 +50,10 @@ public class LoginModelImpl implements LoginModel {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("naverRefreshToken",null);
     }
+
+    @Override
+    public void setNullNaverUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserNumber",null);
+    }
 }

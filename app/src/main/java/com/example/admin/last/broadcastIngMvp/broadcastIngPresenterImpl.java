@@ -135,11 +135,14 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
                 JSONObject response = jsonObject.getJSONObject("response");
                 Log.d("TAG", "onPostExecute: " + response);
 
+                String user = response.getString("id");
                 String id = response.getString("nickname");
                 String imgUrl = response.getString("profile_image");
 
                 mBroadcastIngModel.setNaverRenewUserId(context, id);
                 mBroadcastIngModel.setNaverRenewUserImg(context, imgUrl);
+                mBroadcastIngModel.setNaverUserNumber(context,user);
+                Log.d("TAG", "onPostExecute: "+user);
 
 
             } catch (Exception e) {

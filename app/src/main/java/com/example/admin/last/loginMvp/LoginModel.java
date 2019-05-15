@@ -11,5 +11,5 @@ public interface LoginModel {
     void setNaverRenewUserImg(Context context,String string);
     void setNullRefreshKakaoToken(Context context);
     void setNullRefreshNaverToken(Context context);
-
+    void setNullNaverUserNumber(Context context);
 }

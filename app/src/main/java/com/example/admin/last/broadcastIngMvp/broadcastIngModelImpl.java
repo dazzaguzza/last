@@ -104,6 +104,12 @@ public class broadcastIngModelImpl implements broadcastIngModel {
     }
 
     @Override
+    public void setNaverUserNumber(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserNumber",string);
+    }
+
+    @Override
     public void setNaverRenewUserId(Context context, String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("naverUserId",string);

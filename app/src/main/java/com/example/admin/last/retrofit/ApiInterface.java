@@ -25,4 +25,12 @@ public interface ApiInterface {
     @POST("doneStreaming.php")
     Call<RecordData> stopStream(@Field("url") String url,@Field("key") String key);
 
+    @FormUrlEncoded
+    @POST("okRecord.php")
+    Call<RecordData> okRecord(@Field("title") String title,@Field("key") String key);
+
+    @FormUrlEncoded
+    @POST("cancleRecord.php")
+    Call<RecordData> cancleRecord(@Field("key") String key);
+
 }

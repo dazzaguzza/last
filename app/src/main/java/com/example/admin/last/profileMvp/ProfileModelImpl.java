@@ -83,6 +83,12 @@ public class ProfileModelImpl implements ProfileModel{
     }
 
     @Override
+    public void setNullNaverUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("naverUserNumber",null);
+    }
+
+    @Override
     public void setNaverRenewUserId(Context context, String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("naverUserId",string);

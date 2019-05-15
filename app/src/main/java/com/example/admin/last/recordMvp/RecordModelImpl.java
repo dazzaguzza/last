@@ -52,10 +52,12 @@ public class RecordModelImpl implements RecordModel {
     }
 
     @Override
-    public String makeKey() {
+    public String makeKey(Context context) {
         Random random = new Random();
-        int makeKey = random.nextInt(222222222);
+        int makeKey = random.nextInt(999999999);
         String key = String.valueOf(makeKey);
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("key",key);
         return key;
     }
 
@@ -81,6 +83,7 @@ public class RecordModelImpl implements RecordModel {
         });
 
         rtmpCamera1.stopStream();
+
         Log.d("TAG", "stopStreamCamera1: "+key);
     }
 

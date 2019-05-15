@@ -13,4 +13,5 @@ public interface RecordView {
    void showErorr();
    void getTexturViewListener();
    void cameraOn();
+   void showDialog();
 }

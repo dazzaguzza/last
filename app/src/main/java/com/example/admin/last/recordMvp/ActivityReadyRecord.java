@@ -36,7 +36,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ready_record);
 
-        mRecordPresenter = new RecordPresenterImpl(this);
+        mRecordPresenter = new RecordPresenterImpl(this,ActivityReadyRecord.this);
 
         mRecordPresenter.getRequest_permission(ActivityReadyRecord.this);
 
@@ -160,6 +160,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
     @Override
     public void cameraOn() {
         rtmpCamera1.startPreview();
+    }
+
+    @Override
+    public void showDialog() {
+        EditTextDialog dialog = new EditTextDialog();
+        dialog.show(getSupportFragmentManager());
+        dialog.setCancelable(false);
     }
 
     @Override

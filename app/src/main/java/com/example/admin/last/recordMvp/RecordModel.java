@@ -6,7 +6,7 @@ import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 
 public interface RecordModel {
     void setStream(Context context, String key);
-    String makeKey();
+    String makeKey(Context context);
     void startStreamCamera1(RtmpCamera1 rtmpCamera1, String key);
     void stopStreamCamera1(RtmpCamera1 rtmpCamera1,String key);
     void stopPreview(RtmpCamera1 rtmpCamera1);

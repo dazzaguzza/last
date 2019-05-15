@@ -12,6 +12,7 @@ public interface ProfileModel {
     void setKakaoRenewUserImg(Context context,String string);
     String getNaverUserId(Context context);
     String getNaverUserImg(Context context);
+    void setNullNaverUserNumber(Context context);
     void setNaverRenewUserId(Context context,String string);
     void setNaverRenewUserImg(Context context,String string);
     void setNullRefreshKakaoToken(Context context);

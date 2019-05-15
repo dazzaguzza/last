@@ -10,10 +10,12 @@ public interface broadcastIngModel {
     String checkNaverToken(Context context);
     String getKakaoUserId(Context context);
     String getKakaoUserImg(Context context);
+
     void setKakaoRenewUserId(Context context, String string);
     void setKakaoRenewUserImg(Context context,String string);
     String getNaverUserId(Context context);
     String getNaverUserImg(Context context);
+    void setNaverUserNumber(Context context,String string);
     void setNaverRenewUserId(Context context,String string);
     void setNaverRenewUserImg(Context context,String string);
 }

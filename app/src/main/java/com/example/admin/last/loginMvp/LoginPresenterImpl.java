@@ -119,6 +119,7 @@ public class LoginPresenterImpl implements LoginPersenter {
                 mLogin_model.setNullRefreshNaverToken(context);
                 mLogin_model.setNaverRenewUserId(context, null);
                 mLogin_model.setNaverRenewUserImg(context, null);
+                mLogin_model.setNullNaverUserNumber(context);
                 Log.d("TAG", "checkNaverAutoLogin: null");
             }
 

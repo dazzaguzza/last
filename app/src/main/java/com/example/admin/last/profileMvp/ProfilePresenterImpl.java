@@ -48,6 +48,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         mProfileView.goToLogin();
         mProfileModel.setNaverRenewUserId(context, null);
         mProfileModel.setNaverRenewUserImg(context, null);
+        mProfileModel.setNullNaverUserNumber(context);
     }
 
     @Override
