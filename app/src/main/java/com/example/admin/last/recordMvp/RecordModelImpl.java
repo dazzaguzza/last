@@ -17,19 +17,20 @@ import retrofit2.Response;
 public class RecordModelImpl implements RecordModel {
 
     public static ApiInterface apiInterface;
-    String rtmpUrl="rtmp://52.79.243.140/live/";
+    String rtmpUrl = "rtmp://52.79.243.140/live/";
     SharedPreferenceUtil sharedPreferenceUtil;
-    String userId,userImg;
+    String userId, userImg;
+    String img_profile, txt_id, key1, url, path;
 
     @Override
     public void setStream(Context context, String key) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        if(sharedPreferenceUtil.getSharedPreference("kakaoUserId") != null){
+        if (sharedPreferenceUtil.getSharedPreference("kakaoUserId") != null) {
 
-             userId = sharedPreferenceUtil.getSharedPreference("kakaoUserId");
-             userImg = sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
+            userId = sharedPreferenceUtil.getSharedPreference("kakaoUserId");
+            userImg = sharedPreferenceUtil.getSharedPreference("kakaoUserImg");
 
-        }else if(sharedPreferenceUtil.getSharedPreference("naverUserId") != null){
+        } else if (sharedPreferenceUtil.getSharedPreference("naverUserId") != null) {
 
             userId = sharedPreferenceUtil.getSharedPreference("naverUserId");
             userImg = sharedPreferenceUtil.getSharedPreference("naverUserImg");
@@ -37,11 +38,15 @@ public class RecordModelImpl implements RecordModel {
         }
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<RecordData> call = apiInterface.setStream(userImg,userId,rtmpUrl+key,key);
+        Call<RecordData> call = apiInterface.setStream(userImg, userId, rtmpUrl + key, key);
         call.enqueue(new Callback<RecordData>() {
             @Override
             public void onResponse(Call<RecordData> call, Response<RecordData> response) {
-                Log.d("TAG", "onResponse: 전송됨");
+                img_profile = response.body().profileImg;
+                txt_id = response.body().id;
+                key1 = response.body().key;
+                url = response.body().url;
+                path = response.body().imgPath;
             }
 
             @Override
@@ -57,19 +62,19 @@ public class RecordModelImpl implements RecordModel {
         int makeKey = random.nextInt(999999999);
         String key = String.valueOf(makeKey);
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
-        sharedPreferenceUtil.putSharedPreference("key",key);
+        sharedPreferenceUtil.putSharedPreference("key", key);
         return key;
     }
 
     @Override
-    public void startStreamCamera1(RtmpCamera1 rtmpCamera1,String key) {
-        rtmpCamera1.startStream(rtmpUrl+key);
+    public void startStreamCamera1(RtmpCamera1 rtmpCamera1, String key) {
+        rtmpCamera1.startStream(rtmpUrl + key);
     }
 
     @Override
-    public void stopStreamCamera1(RtmpCamera1 rtmpCamera1,String key) {
+    public void stopStreamCamera1(RtmpCamera1 rtmpCamera1, String key) {
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<RecordData> call = apiInterface.stopStream(rtmpUrl+key,key);
+        Call<RecordData> call = apiInterface.stopStream(rtmpUrl + key, key);
         call.enqueue(new Callback<RecordData>() {
             @Override
             public void onResponse(Call<RecordData> call, Response<RecordData> response) {
@@ -84,11 +89,66 @@ public class RecordModelImpl implements RecordModel {
 
         rtmpCamera1.stopStream();
 
-        Log.d("TAG", "stopStreamCamera1: "+key);
+        Log.d("TAG", "stopStreamCamera1: " + key);
     }
 
     @Override
     public void stopPreview(RtmpCamera1 rtmpCamera1) {
         rtmpCamera1.stopPreview();
+    }
+
+    @Override
+    public String getKakaoUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserNumber");
+    }
+
+    @Override
+    public String getNaverUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserNumber");
+    }
+
+    @Override
+    public void endOfStream(RtmpCamera1 rtmpCamera1, Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        String key = null;
+        if (sharedPreferenceUtil.getSharedPreference("naverUserNumber") != null) {
+            key = sharedPreferenceUtil.getSharedPreference("naverUserNumber");
+        } else if (sharedPreferenceUtil.getSharedPreference("kakaoUserNumber") != null) {
+            key = sharedPreferenceUtil.getSharedPreference("kakaoUserNumber");
+        }
+        Log.d("TAG", "onResponse: " + key);
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<RecordData> call = apiInterface.end(key);
+        call.enqueue(new Callback<RecordData>() {
+            @Override
+            public void onResponse(Call<RecordData> call, Response<RecordData> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<RecordData> call, Throwable t) {
+
+            }
+        });
+        rtmpCamera1.stopStream();
+    }
+
+    @Override
+    public void setRoomName(String rommName) {
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<RecordData> call = apiInterface.roomName(img_profile, txt_id, key1, url, path,rommName);
+        call.enqueue(new Callback<RecordData>() {
+            @Override
+            public void onResponse(Call<RecordData> call, Response<RecordData> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<RecordData> call, Throwable t) {
+
+            }
+        });
     }
 }

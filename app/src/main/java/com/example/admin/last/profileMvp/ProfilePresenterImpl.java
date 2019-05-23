@@ -38,7 +38,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         mProfileView.goToLogin();
         mProfileModel.setKakaoRenewUserId(context, null);
         mProfileModel.setKakaoRenewUserImg(context, null);
-
+        mProfileModel.setNullKakaoUserNumber(context);
     }
 
     @Override
@@ -154,6 +154,11 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             });
 
         }
+    }
+
+    @Override
+    public void clickToMyContents() {
+        mProfileView.goToMyContents();
     }
 
 

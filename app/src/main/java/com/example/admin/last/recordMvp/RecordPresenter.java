@@ -14,4 +14,6 @@ public interface RecordPresenter {
     void streamOrNot(RtmpCamera1 rtmpCamera1);
     void connetionErorr(RtmpCamera1 rtmpCamera1);
     void surfaceTextureDestroyed(RtmpCamera1 rtmpCamera1);
+    void end(RtmpCamera1 rtmpCamera1);
+    void makeRoomName(String string);
 }

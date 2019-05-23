@@ -17,5 +17,5 @@ public interface ProfileView {
     void setProfileImg(String string);
     void hideProfileImg();
     void showProfileImg();
-
+    void goToMyContents();
 }

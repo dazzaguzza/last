@@ -2,6 +2,8 @@ package com.example.admin.last.loginMvp;
 
 import android.content.Context;
 
+import com.example.admin.last.SharedPreferenceUtil;
+
 public interface LoginModel {
 
     void setNaverToken(Context context, String string);
@@ -12,4 +14,5 @@ public interface LoginModel {
     void setNullRefreshKakaoToken(Context context);
     void setNullRefreshNaverToken(Context context);
     void setNullNaverUserNumber(Context context);
+    void setNullKakaoUserNumber(Context context);
 }

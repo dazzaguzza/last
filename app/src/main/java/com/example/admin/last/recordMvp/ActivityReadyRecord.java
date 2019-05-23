@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.admin.last.R;
@@ -49,6 +50,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
             }
         });
 
+        binding.btnRoonName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecordPresenter.makeRoomName(binding.edtRoomName.getText().toString());
+            }
+        });
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -70,6 +78,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
         mRecordPresenter.surfaceTextureDestroyed(rtmpCamera1);
+        Log.d("TAG", "onstop:stop1");
         return true;
     }
 
@@ -95,6 +104,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
             @Override
             public void run() {
                 mRecordPresenter.connetionErorr(rtmpCamera1);
+                Log.d("TAG", "onstop:stop2");
             }
         });
     }
@@ -105,6 +115,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
             @Override
             public void run() {
                 mRecordPresenter.endStream();
+                Log.d("TAG", "onstop:stop3");
             }
         });
     }
@@ -170,6 +181,24 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
     }
 
     @Override
+    public void showSetRoomName() {
+        binding.edtRoomName.setVisibility(View.VISIBLE);
+        binding.btnRoonName.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSetRoomName() {
+        binding.edtRoomName.setVisibility(View.GONE);
+        binding.btnRoonName.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void toastFillRoomName() {
+        Toast.makeText(this, "방 제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void viewGone() {
         binding.txt1.setVisibility(View.GONE);
         binding.txt2.setVisibility(View.GONE);
@@ -198,7 +227,10 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         return rtmpCamera1 = new RtmpCamera1(binding.textureView, this);
     }
 
-
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRecordPresenter.end(rtmpCamera1);
+        Log.d("TAG", "onstop: 4");
+    }
 }

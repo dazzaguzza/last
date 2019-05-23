@@ -77,8 +77,23 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
     }
 
     @Override
+    public void showTxt() {
+        binding.RelWithTxt.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideTxt() {
+        binding.RelWithTxt.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onRefresh() {
         mBroadcastIngPresenter.setAllStreamingRoom(arrayList, adapter_ing);
+        if(arrayList.size() != 0){
+            binding.RelWithTxt.setVisibility(View.GONE);
+        }else{
+            binding.RelWithTxt.setVisibility(View.VISIBLE);
+        }
         binding.refresh.setRefreshing(false);
     }
 

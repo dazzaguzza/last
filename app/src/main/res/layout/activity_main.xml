@@ -19,6 +19,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true">
 
+
             <com.example.admin.last.bottomnavigatation.CurvedBottomNavigationView
                 android:id="@+id/customBottomBar"
                 android:layout_width="match_parent"

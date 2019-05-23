@@ -55,6 +55,11 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
     @Override
     public void setAllStreamingRoom(ArrayList arrayList, AdapterIng adapterIng) {
         mBroadcastIngModel.getAllStreamingRoom(arrayList, adapterIng);
+        if (arrayList.size() != 0) {
+            mBroadcastIngView.hideTxt();
+        } else {
+            mBroadcastIngView.showTxt();
+        }
     }
 
     @Override
@@ -67,12 +72,12 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
 
         if (mBroadcastIngModel.checkNaverToken(context) != null
                 && mBroadcastIngModel.checkKakaoToken(context) == null
-                && mBroadcastIngModel.getNaverUserId(context) == null) {
+                && mBroadcastIngModel.getNaverUserNumber(context) == null) {
 
             RequestApiTask requestApiTask = new RequestApiTask(context);
             requestApiTask.execute();
 
-            Log.d("TAG", "getProfile: 받음");
+            Log.d("TAG", "getProfile: 받음" + mBroadcastIngModel.getNaverUserNumber(context));
 
         } else if (mBroadcastIngModel.checkKakaoToken(context) != null
                 && mBroadcastIngModel.checkNaverToken(context) == null
@@ -98,6 +103,7 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
                 public void onSuccess(KakaoTalkProfile result) {
                     mBroadcastIngModel.setKakaoRenewUserId(context, result.getNickName());
                     mBroadcastIngModel.setKakaoRenewUserImg(context, result.getProfileImageUrl());
+
                     Log.d("TAG", "getProfile: 받음" + mBroadcastIngModel.getKakaoUserId(context));
                 }
             });
@@ -141,8 +147,8 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
 
                 mBroadcastIngModel.setNaverRenewUserId(context, id);
                 mBroadcastIngModel.setNaverRenewUserImg(context, imgUrl);
-                mBroadcastIngModel.setNaverUserNumber(context,user);
-                Log.d("TAG", "onPostExecute: "+user);
+                mBroadcastIngModel.setNaverUserNumber(context, user + "_N");
+                Log.d("TAG", "onPostExecute: " + user);
 
 
             } catch (Exception e) {

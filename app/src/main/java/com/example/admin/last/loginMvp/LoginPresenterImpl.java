@@ -73,6 +73,7 @@ public class LoginPresenterImpl implements LoginPersenter {
             mLogin_model.setNullRefreshKakaoToken(context);
             mLogin_model.setKakaoRenewUserId(context, null);
             mLogin_model.setKakaoRenewUserImg(context, null);
+            mLogin_model.setNullKakaoUserNumber(context);
             Log.d("TAG", "kakaoLogin: 세션닫힘");
         }
     }

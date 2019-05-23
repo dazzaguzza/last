@@ -46,17 +46,26 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
         final ItemIng data = arrayList.get(position);
 
         holder.tv_txt_id.setText(data.getTxt_id());
+       try{
 
+           if(data.getRoom_name().equals(null)){
+               holder.tv_txtRoomName.setVisibility(View.GONE);
+           }else {
+               holder.tv_txtRoomName.setVisibility(View.VISIBLE);
+               holder.tv_txtRoomName.setText(data.getRoom_name());
+           }
+
+       }catch (Exception e){}
 
         Glide.with(context).load(data.getImg_contents()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(holder.tv_img_contents);
+                .skipMemoryCache(true).error(R.drawable.noimage).into(holder.tv_img_contents);
 
 
         holder.tv_img_profile.setBackground(new ShapeDrawable(new OvalShape()));
         holder.tv_img_profile.setClipToOutline(true);
 
         Glide.with(context).load(data.getImg_profile()).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(holder.tv_img_profile);
+                .skipMemoryCache(true).error(R.drawable.noimage).into(holder.tv_img_profile);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +73,7 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, ActivityWatch.class);
                 intent.putExtra("url", data.getUrl());
+                intent.putExtra("key",data.getKey());
                 context.startActivity(intent);
                 Log.d("TAG", "onClick: " + data.getUrl());
             }
@@ -79,7 +89,7 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_txt_id;
+        TextView tv_txt_id, tv_txtRoomName;
         ImageView tv_img_contents, tv_img_profile;
 
 
@@ -89,6 +99,7 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
             tv_img_profile = (ImageView) itemView.findViewById(R.id.img_profile);
             tv_txt_id = (TextView) itemView.findViewById(R.id.txt_id);
             tv_img_contents = (ImageView) itemView.findViewById(R.id.img_contents);
+            tv_txtRoomName = (TextView) itemView.findViewById(R.id.txtRoomName);
         }
     }
 }

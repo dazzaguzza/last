@@ -59,6 +59,13 @@ public class ProfileModelImpl implements ProfileModel{
     }
 
     @Override
+    public void setNullKakaoUserNumber(Context context) {
+            sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+            sharedPreferenceUtil.putSharedPreference("kakaoUserNumber",null);
+
+    }
+
+    @Override
     public void setKakaoRenewUserId(Context context,String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("kakaoUserId",string);

@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.admin.last.R;
 import com.example.admin.last.databinding.FragmentProfileBinding;
 import com.example.admin.last.loginMvp.ActivityLogin;
+import com.example.admin.last.myContentsMVP.MyContents;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -83,6 +84,13 @@ public class FragmentProfile extends Fragment implements ProfileView {
             @Override
             public void onClick(View view) {
                 mProfilePresenter.profileRenew(getActivity());
+            }
+        });
+
+        binding.myContents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mProfilePresenter.clickToMyContents();
             }
         });
 
@@ -153,6 +161,12 @@ public class FragmentProfile extends Fragment implements ProfileView {
     @Override
     public void showProfileImg() {
         binding.imgProfile.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void goToMyContents() {
+        Intent intent = new Intent(getActivity(), MyContents.class);
+        startActivity(intent);
     }
 
 

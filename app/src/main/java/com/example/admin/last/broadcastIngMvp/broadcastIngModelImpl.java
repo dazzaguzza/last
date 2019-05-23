@@ -35,10 +35,12 @@ public class broadcastIngModelImpl implements broadcastIngModel {
                 try{
                     for (int i = 0; i < response.body().size(); i++) {
 
-                        arrayList.add(new ItemIng(response.body().get(i).profileImg,response.body().get(i).id,response.body().get(i).imgPath, response.body().get(i).url,response.body().get(i).key));
+                        arrayList.add(new ItemIng(response.body().get(i).profileImg,response.body().get(i).id,response.body().get(i).imgPath,
+                                response.body().get(i).url,response.body().get(i).key,response.body().get(i).roomName));
 
                         Log.d("TAG", "onResponse: "+response.body().get(i).getUrl());
                         Log.d("TAG", "onResponse: "+response.body().get(i).imgPath);
+                        Log.d("TAG", "onResponse1: "+response.body().get(i).url);
 
                     }
                   adapterIng.notifyDataSetChanged();
@@ -80,6 +82,18 @@ public class broadcastIngModelImpl implements broadcastIngModel {
     }
 
     @Override
+    public String getKakaoUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("kakaoUserNumber");
+    }
+
+    @Override
+    public void setKakaoUserNumber(Context context, String string) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserNumber",string);
+    }
+
+    @Override
     public void setKakaoRenewUserId(Context context, String string) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("kakaoUserId",string);
@@ -101,6 +115,12 @@ public class broadcastIngModelImpl implements broadcastIngModel {
     public String getNaverUserImg(Context context) {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         return sharedPreferenceUtil.getSharedPreference("naverUserImg");
+    }
+
+    @Override
+    public String getNaverUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        return sharedPreferenceUtil.getSharedPreference("naverUserNumber");
     }
 
     @Override

@@ -11,5 +11,5 @@ public interface ProfilePresenter {
     void setUserInfo(Context context);
     void roundImg(View view);
     void profileRenew(Context context);
-
+    void clickToMyContents();
 }

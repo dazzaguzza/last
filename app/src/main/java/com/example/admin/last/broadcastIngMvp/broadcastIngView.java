@@ -8,4 +8,6 @@ public interface broadcastIngView {
     void makeShowFloating();
     void clickBroadcast();
     void setRefresh();
+    void showTxt();
+    void hideTxt();
 }

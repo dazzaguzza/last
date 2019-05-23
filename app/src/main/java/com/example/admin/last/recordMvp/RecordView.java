@@ -14,4 +14,7 @@ public interface RecordView {
    void getTexturViewListener();
    void cameraOn();
    void showDialog();
+   void showSetRoomName();
+   void hideSetRoomName();
+   void toastFillRoomName();
 }

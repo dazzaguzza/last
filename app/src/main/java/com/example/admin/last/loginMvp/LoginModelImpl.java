@@ -56,4 +56,11 @@ public class LoginModelImpl implements LoginModel {
         sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
         sharedPreferenceUtil.putSharedPreference("naverUserNumber",null);
     }
+
+    @Override
+    public void setNullKakaoUserNumber(Context context) {
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(context);
+        sharedPreferenceUtil.putSharedPreference("kakaoUserNumber",null);
+
+    }
 }
