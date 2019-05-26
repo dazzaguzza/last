@@ -48,7 +48,8 @@ public class FragmentBroadcastEnd extends Fragment implements BroadcastEndView{
 
         mBroadcastEndPresenter.setListView();
 
-        mBroadcastEndPresenter.setVodList(arrayList,adapterEnd,copyArrayList);
+        mBroadcastEndPresenter.setVodList(arrayList,adapterEnd,copyArrayList,getActivity());
+
 
         binding.findVOD.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,6 +93,7 @@ public class FragmentBroadcastEnd extends Fragment implements BroadcastEndView{
     @Override
     public void goToWatchVod(ArrayList<ItemEnd> arrayList,int position) {
         Intent intent = new Intent(getActivity(), WatchVod.class);
+        intent.putExtra("position",position);
         intent.putExtra("vodUrl", arrayList.get(position).getAddress());
         startActivity(intent);
     }

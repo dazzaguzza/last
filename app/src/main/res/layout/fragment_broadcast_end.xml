@@ -40,8 +40,8 @@
                 android:id="@+id/findVOD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="동영상 찾기"
-                />
+                android:hint="동영상 제목을 검색해보세요!"
+                android:textColorHint="#ffffff"/>
 
 
         </LinearLayout>
