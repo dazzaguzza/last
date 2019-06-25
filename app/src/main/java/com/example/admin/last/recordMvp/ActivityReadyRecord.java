@@ -3,6 +3,8 @@ package com.example.admin.last.recordMvp;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.SurfaceTexture;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.admin.last.R;
@@ -21,6 +24,13 @@ import com.pedro.rtplibrary.view.AutoFitTextureView;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,17 +40,18 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
     ActivityReadyRecordBinding binding;
     RecordPresenter mRecordPresenter;
     private RtmpCamera1 rtmpCamera1;
-    ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ready_record);
+        binding.listviewChatRecord.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
         mRecordPresenter = new RecordPresenterImpl(this,ActivityReadyRecord.this);
 
-        mRecordPresenter.getRequest_permission(ActivityReadyRecord.this);
+        mRecordPresenter.socketOpenAndReceive(binding.listviewChatRecord,ActivityReadyRecord.this);
 
+        mRecordPresenter.getRequest_permission(ActivityReadyRecord.this);
 
 
         binding.bStartStop.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +209,7 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         Toast.makeText(this, "방 제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void viewGone() {
         binding.txt1.setVisibility(View.GONE);
@@ -232,5 +244,11 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
         super.onStop();
         mRecordPresenter.end(rtmpCamera1);
         Log.d("TAG", "onstop: 4");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRecordPresenter.socketDestroy();
     }
 }

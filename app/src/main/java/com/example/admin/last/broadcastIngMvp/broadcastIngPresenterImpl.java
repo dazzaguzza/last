@@ -2,6 +2,7 @@ package com.example.admin.last.broadcastIngMvp;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
@@ -53,13 +54,21 @@ public class broadcastIngPresenterImpl implements broadcastIngPresenter {
     }
 
     @Override
-    public void setAllStreamingRoom(ArrayList arrayList, AdapterIng adapterIng) {
+    public void setAllStreamingRoom(final ArrayList arrayList, AdapterIng adapterIng) {
         mBroadcastIngModel.getAllStreamingRoom(arrayList, adapterIng);
-        if (arrayList.size() != 0) {
-            mBroadcastIngView.hideTxt();
-        } else {
-            mBroadcastIngView.showTxt();
-        }
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (arrayList.size() != 0) {
+                    mBroadcastIngView.hideTxt();
+                } else {
+                    mBroadcastIngView.showTxt();
+                }
+            }
+        };
+        handler.postDelayed(runnable, 1000);
     }
 
     @Override

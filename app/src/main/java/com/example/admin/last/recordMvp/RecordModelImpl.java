@@ -1,6 +1,8 @@
 package com.example.admin.last.recordMvp;
 
 import android.content.Context;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.admin.last.SharedPreferenceUtil;
@@ -8,6 +10,11 @@ import com.example.admin.last.retrofit.ApiClient;
 import com.example.admin.last.retrofit.ApiInterface;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -151,4 +158,5 @@ public class RecordModelImpl implements RecordModel {
             }
         });
     }
+
 }
