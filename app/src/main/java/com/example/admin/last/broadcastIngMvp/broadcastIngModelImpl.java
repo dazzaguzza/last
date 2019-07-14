@@ -24,37 +24,37 @@ public class broadcastIngModelImpl implements broadcastIngModel {
 
     @Override
     public void getAllStreamingRoom(final ArrayList arrayList, final AdapterIng adapterIng) {
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<RoomData>> call = apiInterface.getStreamingRoom("ok");
-        call.enqueue(new Callback<List<RoomData>>() {
-            @Override
-            public void onResponse(Call<List<RoomData>> call, Response<List<RoomData>> response) {
-
-                arrayList.clear();
-
-                try{
-                    for (int i = 0; i < response.body().size(); i++) {
-
-                        arrayList.add(new ItemIng(response.body().get(i).profileImg,response.body().get(i).id,response.body().get(i).imgPath,
-                                response.body().get(i).url,response.body().get(i).key,response.body().get(i).roomName));
-
-                        Log.d("TAG", "onResponse: "+response.body().get(i).getUrl());
-                        Log.d("TAG", "onResponse: "+response.body().get(i).imgPath);
-                        Log.d("TAG", "onResponse1: "+response.body().get(i).url);
-
-                    }
-                  adapterIng.notifyDataSetChanged();
-                }catch (Exception e){
-
-                }
-                }
-
-
-            @Override
-            public void onFailure(Call<List<RoomData>> call, Throwable t) {
-                Log.d("TAG", "onResponse: fail"+t);
-            }
-        });
+//        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+//        Call<List<RoomData>> call = apiInterface.getStreamingRoom("ok");
+//        call.enqueue(new Callback<List<RoomData>>() {
+//            @Override
+//            public void onResponse(Call<List<RoomData>> call, Response<List<RoomData>> response) {
+//
+//                arrayList.clear();
+//
+//                try{
+//                    for (int i = 0; i < response.body().size(); i++) {
+//
+//                        arrayList.add(new ItemIng(response.body().get(i).profileImg,response.body().get(i).id,response.body().get(i).imgPath,
+//                                response.body().get(i).url,response.body().get(i).key,response.body().get(i).roomName));
+//
+//                        Log.d("TAG", "onResponse: "+response.body().get(i).getUrl());
+//                        Log.d("TAG", "onResponse: "+response.body().get(i).imgPath);
+//                        Log.d("TAG", "onResponse1: "+response.body().get(i).url);
+//
+//                    }
+//                  adapterIng.notifyDataSetChanged();
+//                }catch (Exception e){
+//
+//                }
+//                }
+//
+//
+//            @Override
+//            public void onFailure(Call<List<RoomData>> call, Throwable t) {
+//                Log.d("TAG", "onResponse: fail"+t);
+//            }
+//        });
     }
 
     @Override

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".watchMvp.ActivityWatch">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exo_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:resize_mode="zoom"
+        app:use_controller="false">
+
+
+    </com.google.android.exoplayer2.ui.PlayerView>
+
+    <ListView
+        android:id="@+id/listview_chat_watch"
+        android:layout_width="350dp"
+        android:layout_height="270dp"
+        android:layout_alignEnd="@+id/exo_player_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="68dp"
+        android:background="#00000000"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="445dp">
+
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_chat_watch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/exo_player_view"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:maxLength="44"/>
+
+        <Button
+            android:id="@+id/btn_chat_watch"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:background="@color/com_kakao_button_background_press"
+            android:text="보내기" />
+
+    </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</layout>

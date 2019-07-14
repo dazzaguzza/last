@@ -2,12 +2,18 @@ package com.example.admin.last.broadcastIngMvp;
 
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.admin.last.SharedPreferenceUtil;
 import com.example.admin.last.recordMvp.ActivityReadyRecord;
@@ -36,13 +43,14 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentBroadcastIng extends Fragment implements broadcastIngView,SwipeRefreshLayout.OnRefreshListener {
+public class FragmentBroadcastIng extends Fragment implements broadcastIngView, SwipeRefreshLayout.OnRefreshListener {
 
     LinearLayoutManager linearLayoutManager;
     AdapterIng adapter_ing;
     FragmentBroadcastIngBinding binding;
     broadcastIngPresenter mBroadcastIngPresenter;
-    ArrayList<ItemIng> arrayList = new ArrayList<>();
+    // ArrayList<ItemIng> arrayList = new ArrayList<>();
+    IngViewModel ingViewModel;
     bus bus;
 
     @Override
@@ -50,8 +58,33 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
         linearLayoutManager = new LinearLayoutManager(getContext());
         binding.recycler.setHasFixedSize(true);
         binding.recycler.setLayoutManager(linearLayoutManager);
-        adapter_ing = new AdapterIng(getContext(), arrayList);
+
+        ingViewModel = ViewModelProviders.of(getActivity()).get(IngViewModel.class);
+        adapter_ing = new AdapterIng(getContext());
+
+        ingViewModel.ingPagedList.observe(getActivity(), new Observer<PagedList<ItemIng>>() {
+            @Override
+            public void onChanged(@Nullable final PagedList<ItemIng> itemIngs) {
+                adapter_ing.submitList(itemIngs);
+                binding.refresh.setRefreshing(false);
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (itemIngs.size() != 0) {
+                            hideTxt();
+                        } else {
+                            showTxt();
+                        }
+                    }
+                };
+                handler.postDelayed(runnable, 1000);
+
+            }
+        });
         binding.recycler.setAdapter(adapter_ing);
+
+
     }
 
     @Override
@@ -88,12 +121,13 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
 
     @Override
     public void onRefresh() {
-        mBroadcastIngPresenter.setAllStreamingRoom(arrayList, adapter_ing);
-        if(arrayList.size() != 0){
-            binding.RelWithTxt.setVisibility(View.GONE);
-        }else{
-            binding.RelWithTxt.setVisibility(View.VISIBLE);
-        }
+//        mBroadcastIngPresenter.setAllStreamingRoom(arrayList, adapter_ing);
+//        if(arrayList.size() != 0){
+//            binding.RelWithTxt.setVisibility(View.GONE);
+//        }else{
+//            binding.RelWithTxt.setVisibility(View.VISIBLE);
+//        }
+        ingViewModel.refresh();
         binding.refresh.setRefreshing(false);
     }
 
@@ -154,7 +188,7 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView,S
     @Override
     public void onResume() {
         super.onResume();
-        mBroadcastIngPresenter.setAllStreamingRoom(arrayList, adapter_ing);
+        //  mBroadcastIngPresenter.setAllStreamingRoom(arrayList, adapter_ing);
     }
 
     @Override

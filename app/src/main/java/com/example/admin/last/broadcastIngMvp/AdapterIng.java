@@ -1,10 +1,13 @@
 package com.example.admin.last.broadcastIngMvp;
 
 
+import android.annotation.SuppressLint;
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,15 +24,33 @@ import com.example.admin.last.watchMvp.ActivityWatch;
 
 import java.util.ArrayList;
 
-public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
-
+public class AdapterIng extends PagedListAdapter<ItemIng,AdapterIng.MyViewHolder> {
+//RecyclerView.Adapter<AdapterIng.MyViewHolder>
     private Context context;
-    private ArrayList<ItemIng> arrayList;
+   // private ArrayList<ItemIng> arrayList;
 
-    public AdapterIng(Context context, ArrayList<ItemIng> arrayList) {
+    public AdapterIng(Context context) {
+        super(DIFF_CALLBACK);
         this.context = context;
-        this.arrayList = arrayList;
+        //this.arrayList = arrayList;
     }
+
+    private static DiffUtil.ItemCallback<ItemIng> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<ItemIng>(){
+
+                @Override
+                public boolean areItemsTheSame(ItemIng oldItem, ItemIng newItem) {
+                    return oldItem.getUrl() == newItem.getUrl();
+                }
+
+
+                @SuppressLint("DiffUtilEquals")
+                @Override
+                public boolean areContentsTheSame(ItemIng oldItem, ItemIng newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
+
 
     @Override
     public AdapterIng.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,9 +64,9 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
     @Override
     public void onBindViewHolder(AdapterIng.MyViewHolder holder, final int position) {
 
-        final ItemIng data = arrayList.get(position);
-
-        holder.tv_txt_id.setText(data.getTxt_id());
+        //final ItemIng data = arrayList.get(position);
+        final ItemIng data = getItem(position);
+        holder.tv_txt_id.setText(data.txt_id);
        try{
 
            if(data.getRoom_name().equals(null)){
@@ -81,10 +102,10 @@ public class AdapterIng extends RecyclerView.Adapter<AdapterIng.MyViewHolder> {
 
     }
 
-    @Override
-    public int getItemCount() {
-        return arrayList.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return arrayList.size();
+//    }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

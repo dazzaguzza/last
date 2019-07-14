@@ -1,5 +1,8 @@
 package com.example.admin.last.broadcastIngMvp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemIng {
 
     String img_profile,txt_id,img_contents,url,key,room_name;
@@ -11,6 +14,7 @@ public class ItemIng {
         this.url = url;
         this.key = key;
         this.room_name = room_name;
+
     }
 
     public String getImg_profile() {
@@ -60,4 +64,5 @@ public class ItemIng {
     public void setRoom_name(String room_name) {
         this.room_name = room_name;
     }
+
 }
