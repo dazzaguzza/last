@@ -119,7 +119,13 @@ public class WatchVod extends AppCompatActivity implements WatchVodView {
             arrayList = new ArrayList<>();
         }
 
-       arrayList.remove(position);
+        for(int i = 0; i < arrayList.size(); i++){
+            if(arrayList.get(i).getAddress().equals(getVodUrl)){
+                arrayList.remove(i);
+                break;
+            }
+        }
+
 
 
         watchVodAdapter = new WatchVodAdapter(arrayList, WatchVod.this);

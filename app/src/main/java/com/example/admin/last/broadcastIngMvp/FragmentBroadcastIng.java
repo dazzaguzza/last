@@ -128,6 +128,7 @@ public class FragmentBroadcastIng extends Fragment implements broadcastIngView, 
 //            binding.RelWithTxt.setVisibility(View.VISIBLE);
 //        }
         ingViewModel.refresh();
+        binding.recycler.getRecycledViewPool().clear();
         binding.refresh.setRefreshing(false);
     }
 
