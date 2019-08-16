@@ -19,6 +19,7 @@ import com.example.admin.last.R;
 import com.example.admin.last.databinding.ActivityReadyRecordBinding;
 import com.example.admin.last.retrofit.ApiClient;
 import com.example.admin.last.retrofit.ApiInterface;
+import com.pedro.encoder.input.video.CameraOpenException;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.AutoFitTextureView;
 
@@ -65,6 +66,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
             @Override
             public void onClick(View view) {
                 mRecordPresenter.makeRoomName(binding.edtRoomName.getText().toString());
+            }
+        });
+
+        binding.switchCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              mRecordPresenter.changeCameraBackOrFront();
             }
         });
 
@@ -207,6 +215,13 @@ public class ActivityReadyRecord extends AppCompatActivity implements RecordView
     @Override
     public void toastFillRoomName() {
         Toast.makeText(this, "방 제목을 입력해주세요!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void switchCamera() {
+        try{
+            rtmpCamera1.switchCamera();
+        }catch (CameraOpenException e) {}
     }
 
 

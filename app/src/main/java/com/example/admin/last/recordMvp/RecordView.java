@@ -17,4 +17,5 @@ public interface RecordView {
    void showSetRoomName();
    void hideSetRoomName();
    void toastFillRoomName();
+   void switchCamera();
 }

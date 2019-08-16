@@ -206,6 +206,11 @@ public class RecordPresenterImpl implements RecordPresenter {
         }
     }
 
+    @Override
+    public void changeCameraBackOrFront() {
+        mRecordView.switchCamera();
+    }
+
     private Thread checkUpdate = new Thread() {
 
         public void run() {

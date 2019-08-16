@@ -21,4 +21,5 @@ public interface RecordPresenter {
     void makeRoomName(String string);
     void socketOpenAndReceive(ListView listView , Context context);
     void socketDestroy();
+    void changeCameraBackOrFront();
 }
